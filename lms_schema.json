@@ -1,0 +1,225 @@
+{
+  "collections": [
+    {
+      "name": "users",
+      "type": "auth",
+      "schema": [
+        {
+          "name": "name",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "role",
+          "type": "select",
+          "required": true,
+          "options": {
+            "maxSelect": 1,
+            "values": ["admin", "instructor", "student"]
+          }
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "type": "base",
+      "schema": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "slug",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "text"
+        }
+      ]
+    },
+    {
+      "name": "courses",
+      "type": "base",
+      "schema": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "description",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "thumbnail",
+          "type": "file",
+          "options": { "maxSelect": 1 }
+        },
+        {
+          "name": "price",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "level",
+          "type": "select",
+          "required": true,
+          "options": {
+            "maxSelect": 1,
+            "values": ["Beginner", "Intermediate", "Advanced"]
+          }
+        },
+        {
+          "name": "average_rating",
+          "type": "number"
+        },
+        {
+          "name": "num_reviews",
+          "type": "number"
+        },
+        {
+          "name": "total_hours",
+          "type": "number"
+        },
+        {
+          "name": "num_lessons",
+          "type": "number"
+        },
+        {
+          "name": "instructor",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "users"
+          }
+        },
+        {
+          "name": "category",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "categories"
+          }
+        }
+      ]
+    },
+    {
+      "name": "sections",
+      "type": "base",
+      "schema": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "order",
+          "type": "number"
+        },
+        {
+          "name": "course",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "courses"
+          }
+        }
+      ]
+    },
+    {
+      "name": "lessons",
+      "type": "base",
+      "schema": [
+        {
+          "name": "title",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "video_url",
+          "type": "text",
+          "required": true
+        },
+        {
+          "name": "duration",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "order",
+          "type": "number"
+        },
+        {
+          "name": "section",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "sections"
+          }
+        }
+      ]
+    },
+    {
+      "name": "user_progress",
+      "type": "base",
+      "schema": [
+        {
+          "name": "completed",
+          "type": "bool",
+          "required": true
+        },
+        {
+          "name": "user",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "users"
+          }
+        },
+        {
+          "name": "lesson",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "lessons"
+          }
+        }
+      ]
+    },
+    {
+      "name": "reviews",
+      "type": "base",
+      "schema": [
+        {
+          "name": "rating",
+          "type": "number",
+          "required": true
+        },
+        {
+          "name": "comment",
+          "type": "text"
+        },
+        {
+          "name": "user",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "users"
+          }
+        },
+        {
+          "name": "course",
+          "type": "relation",
+          "options": {
+            "maxSelect": 1,
+            "collectionId": "courses"
+          }
+        }
+      ]
+    }
+  ]
+}
