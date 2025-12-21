@@ -4,7 +4,7 @@ import { CourseCardProps } from "@/lib/types";
 import { RatingStars } from "../shared/Stars";
 import Link from "next/link";
 
-export default function CourseCard({
+export default async function CourseCard({
   title,
   avg_rating,
   discount_price,
@@ -20,10 +20,13 @@ export default function CourseCard({
   type = "home",
   role = "instructor",
 }: CourseCardProps) {
-  const { data: instructor } = supabase
+  const { data: instructor } = await supabase
     .from("profiles")
     .select("*")
-    .eq("id", instructor_id);
+    .eq("id", instructor_id)
+    .single();
+
+  const { username } = instructor.username;
 
   return (
     <Link
@@ -54,7 +57,7 @@ export default function CourseCard({
 
           {role !== "instructor" && (
             <p className={`text-sm text-gray-700 ${type !== "home" && "mb-2"}`}>
-              by {instructor?.[0]?.username}
+              by {username}
             </p>
           )}
           {type !== "home" && (
@@ -72,22 +75,30 @@ export default function CourseCard({
           </p>
         </div>
         <div className="flex gap-2">
-          {discount_price && (
-            <p className="font-bold text-xl text-gray-900 pt-2">
-              ${discount_price}
+          {price === 0 ? (
+            <p className="font-bold text-xl text-gray-900 pt-2 capitalize">
+              free
             </p>
+          ) : (
+            <>
+              {discount_price && (
+                <p className="font-bold text-xl text-gray-900 pt-2">
+                  ${discount_price}
+                </p>
+              )}
+              <p
+                className={`font-bold ${
+                  discount_price
+                    ? `text-gray-500 line-through text-sm pt-3 ${
+                        type !== "home" && "pt-3.5"
+                      }`
+                    : "text-xl text-gray-900 pt-2"
+                }`}
+              >
+                ${price}
+              </p>
+            </>
           )}
-          <p
-            className={`font-bold ${
-              discount_price
-                ? `text-gray-500 line-through text-sm pt-3 ${
-                    type !== "home" && "pt-3.5"
-                  }`
-                : "text-xl text-gray-900 pt-2"
-            }`}
-          >
-            ${price}
-          </p>
         </div>
       </div>
     </Link>
