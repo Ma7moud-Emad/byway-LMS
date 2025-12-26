@@ -14,7 +14,7 @@ export default function LessonPlayer({
   if (!lesson) return null;
 
   return (
-    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4">
+    <div className="fixed inset-0 bg-black/70 z-50 flex items-center justify-center px-4 h-screen">
       <div className="bg-white rounded-xl max-w-3xl w-full overflow-hidden">
         <div className="flex justify-between items-start p-4 border-b">
           <div className="flex flex-col gap-2">

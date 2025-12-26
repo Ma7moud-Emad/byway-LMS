@@ -38,9 +38,9 @@ function ResultCard({ course }: { course: CourseCardProps }) {
   return (
     <Link
       href={`/courses/${course.id}`}
-      className="rounded-2xl shadow-blue-light p-4 border-2 border-gray-100"
+      className="border-2 border-gray-100 rounded-sm"
     >
-      <figure className="relative h-40 rounded-lg overflow-hidden ">
+      <figure className="relative h-40 overflow-hidden ">
         <Image
           src={course.poster}
           alt={course.title}
@@ -50,7 +50,7 @@ function ResultCard({ course }: { course: CourseCardProps }) {
           priority
         />
       </figure>
-      <div>
+      <div className="p-2">
         <div>
           <h4 className="font-bold text-xl text-gray-900 pt-2">
             {course.title}
