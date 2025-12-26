@@ -1,4 +1,5 @@
 "use client";
+
 import Image from "next/image";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -116,7 +117,7 @@ export default function Page() {
   };
   return (
     <div className="max-sm:flex max-sm:justify-center max-sm:items-center sm:grid sm:grid-cols-2 h-[94vh] sm:h-[90vh]">
-      <div className="my-auto px-4 max-sm:w-full">
+      <div className="my-auto px-4 max-sm:w-full py-4">
         <h1 className="text-center text-2xl text-gray-700 font-semibold capitalize mb-6">
           Create Your Account
         </h1>
@@ -135,12 +136,11 @@ export default function Page() {
             register={userForm.register}
             errors={userForm.formState.errors}
             onSubmit={userForm.handleSubmit(userOnSubmit)}
-            btnName="re"
+            btnName="sign up"
             isSubmitting={userForm.formState.isSubmitting}
           />
         )}
       </div>
-
       <div className="sm:h-full overflow-hidden">
         <Image
           src={image}

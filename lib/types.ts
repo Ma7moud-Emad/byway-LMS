@@ -30,6 +30,7 @@ export type BannerProps = {
   description: string;
   ctaText?: string;
   ctaHref?: Url;
+  priority?: boolean;
 };
 
 export type HomeContainerProps = {
@@ -45,6 +46,7 @@ export type InputProps<T extends FieldValues> = {
   label?: string;
   register: UseFormRegister<T>;
   error?: FieldError;
+  autocomplete?: string;
 };
 
 export type SignFormProps<T extends FieldValues> = {

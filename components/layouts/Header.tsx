@@ -1,38 +1,13 @@
 "use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import logo from "@/public/logo.svg";
 import { AlignJustify, Search, X } from "@deemlol/next-icons";
-import { useEffect, useState } from "react";
-import { supabase } from "@/lib/supabase";
+import { useState } from "react";
 
 export default function Header() {
   const [toggleMenu, setToggleMenu] = useState(true);
-  const [userId, setUserId] = useState<string | null>(null);
-
-  useEffect(() => {
-    async function fetchSession() {
-      const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) {
-        setUserId(session.user.id);
-      }
-    }
-
-    fetchSession();
-
-    const { data: authListener } = supabase.auth.onAuthStateChange(
-      (event, session) => {
-        if (session) setUserId(session.user.id);
-        else setUserId(null);
-      }
-    );
-
-    return () => {
-      authListener.subscription.unsubscribe();
-    };
-  }, []);
 
   function handelToggle() {
     setToggleMenu((state) => !state);
@@ -47,6 +22,7 @@ export default function Header() {
         <div className="flex gap-4 flex-1">
           <div className="flex-1 flex px-4 py-1 border border-gray-700 rounded-lg">
             <input
+              suppressHydrationWarning
               type="text"
               placeholder="Search Courses..."
               className="w-full text-sm bg-transparent outline-none pr-2 placeholder:text-md placeholder:text-gray-700"
@@ -84,32 +60,21 @@ export default function Header() {
                 </p>
               </Link>
             </li>
-            {userId ? (
-              <li className="md:border md:border-gray-700 md:bg-gray-700 md:text-gray-50 md:px-2 md:py-1 capitalize max-md:border-b max-md:border-gray-300 px-3 max-md:hover:bg-gray-100">
-                <Link href="/signin" className="font-medium block max-md:py-3">
-                  dashboard
-                </Link>
-              </li>
-            ) : (
-              <>
-                <li className="md:border md:border-gray-700 md:px-2 md:py-1 capitalize max-md:border-b max-md:border-gray-300  px-3 max-md:hover:bg-gray-100">
-                  <Link
-                    href="/signin"
-                    className="font-medium block max-md:py-3"
-                  >
-                    log in
-                  </Link>
-                </li>
-                <li className="md:border md:border-gray-700 md:bg-gray-700 md:text-gray-50 md:px-2 md:py-1 capitalize max-md:border-b max-md:border-gray-300 px-3 max-md:hover:bg-gray-100">
-                  <Link
-                    href="/signup"
-                    className="font-medium block max-md:py-3"
-                  >
-                    sign up
-                  </Link>
-                </li>
-              </>
-            )}
+            {/* <li className="md:border md:border-gray-700 md:bg-gray-700 md:text-gray-50 md:px-2 md:py-1 capitalize max-md:border-b max-md:border-gray-300 px-3 max-md:hover:bg-gray-100">
+              <Link href="/signin" className="font-medium block max-md:py-3">
+                dashboard
+              </Link>
+            </li> */}
+            <li className="md:border md:border-gray-700 md:px-2 md:py-1 capitalize max-md:border-b max-md:border-gray-300  px-3 max-md:hover:bg-gray-100">
+              <Link href="/signin" className="font-medium block max-md:py-3">
+                log in
+              </Link>
+            </li>
+            <li className="md:border md:border-gray-700 md:bg-gray-700 md:text-gray-50 md:px-2 md:py-1 capitalize max-md:border-b max-md:border-gray-300 px-3 max-md:hover:bg-gray-100">
+              <Link href="/signup" className="font-medium block max-md:py-3">
+                sign up
+              </Link>
+            </li>
           </ul>
         </div>
       </div>

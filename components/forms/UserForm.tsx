@@ -20,28 +20,27 @@ export default function UserForm<T extends FieldValues>({
         type="text"
         register={register}
         error={errors.full_name as FieldError | undefined}
+        autocomplete="name"
       />
 
       <Input<T>
         name={"user_name" as Path<T>}
-        label="Full Name"
+        label="User Name"
         placeholder="mahmoud emad"
         type="text"
         register={register}
         error={errors.user_name as FieldError | undefined}
+        autocomplete="username"
       />
 
       <Input<T>
         name={"bio" as Path<T>}
-        label="Full Name"
-        placeholder="iam a seasoned web development instructor with over 3 years of experience
-      bridging the gap between theory and real-world application. Specializing
-      in modern JavaScript frameworks, responsive design, and full-stack
-      development, they've empowered hundreds of students to launch careers in
-      tech through hands-on, project-based learning."
+        label="Bio"
+        placeholder="I'm a web development instructor."
         type="text"
         register={register}
         error={errors.bio as FieldError | undefined}
+        autocomplete="organization-title"
       />
 
       <Input<T>
@@ -51,6 +50,7 @@ export default function UserForm<T extends FieldValues>({
         type="tel"
         register={register}
         error={errors.phone as FieldError | undefined}
+        autocomplete="tel"
       />
       <Input<T>
         name={"avatar" as Path<T>}
@@ -58,34 +58,30 @@ export default function UserForm<T extends FieldValues>({
         type="file"
         register={register}
         error={errors.avatar as FieldError | undefined}
+        autocomplete="avatar"
       />
       <div>
         <h1 className="mb-2.5 text-sm font-medium capitalize">Role</h1>
         <div className="mb-6 ">
-          <label className="mb-2.5 text-sm capitalize flex gap-1">
+          <label className="mb-2.5 text-sm capitalize flex gap-1 cursor-pointer">
             <input
               type="radio"
               value="student"
               {...register("role" as Path<T>)}
+              className="cursor-pointer"
             />
             <p>student</p>
           </label>
-          <label className="mb-2.5 text-sm capitalize flex gap-1">
+          <label className="mb-2.5 text-sm capitalize flex gap-1 cursor-pointer">
             <input
               type="radio"
               value="instructor"
               {...register("role" as Path<T>)}
+              className="cursor-pointer"
             />
             <p>instructor</p>
           </label>
-          <label className="mb-2.5 text-sm capitalize flex gap-1">
-            <input
-              type="radio"
-              value="admin"
-              {...register("role" as Path<T>)}
-            />
-            <p>admin</p>
-          </label>
+
           {errors.role && (
             <p className="text-red-500 text-sm mt-1">
               {String(errors.role.message)}

@@ -41,6 +41,7 @@ export default async function InstructorCard({
           src={avatar_url}
           alt={username}
           fill
+          sizes="100%"
           className="object-top object-cover"
         />
       </figure>

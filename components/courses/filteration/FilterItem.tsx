@@ -62,6 +62,7 @@ export default function FilterItem({
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-semibold capitalize">{title}</h3>
         <button
+          suppressHydrationWarning
           onClick={() => setOpen((v) => !v)}
           className="text-lg cursor-pointer"
           aria-label="toggle filter"
@@ -76,14 +77,10 @@ export default function FilterItem({
           <ul className="space-y-2">
             {items.slice(0, visibleCount).map((item) => (
               <li key={item}>
-                <label
-                  className="flex gap-2 items-center cursor-pointer"
-                  htmlFor={`${param}-${item}`}
-                >
+                <label className="flex gap-2 items-center cursor-pointer">
                   <input
                     type={type}
                     name={param}
-                    id={`${param}-${item}`}
                     checked={selectedValues.includes(item)}
                     onChange={() => toggleValue(item)}
                     className="cursor-pointer"
@@ -97,6 +94,7 @@ export default function FilterItem({
           {/* ===== Footer ===== */}
           {items.length > 4 && (
             <button
+              suppressHydrationWarning
               onClick={handleShowMore}
               className="mt-2 text-sm font-semibold text-blue-600 flex items-center gap-1 cursor-pointer"
             >

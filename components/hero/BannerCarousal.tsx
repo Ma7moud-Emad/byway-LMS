@@ -1,12 +1,17 @@
 "use client";
+
 import { useState, useEffect } from "react";
+
+import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
+
+import { BannerProps } from "@/lib/types";
+
+import BannerCard from "./BannerCard";
+
 import banner_1 from "@/public/banner-1.svg";
 import banner_2 from "@/public/banner-2.svg";
 import banner_3 from "@/public/banner-3.svg";
 import banner_4 from "@/public/banner-4.svg";
-import { FaAngleLeft, FaAngleRight } from "react-icons/fa6";
-import BannerCard from "./BannerCard";
-import { BannerProps } from "@/lib/types";
 
 export default function BannerCarousel() {
   const banners: BannerProps[] = [
@@ -46,7 +51,6 @@ export default function BannerCarousel() {
 
   const [current, setCurrent] = useState(0);
 
-  // change banner erery 5s
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrent((prev) => (prev + 1) % banners.length);
@@ -71,7 +75,9 @@ export default function BannerCarousel() {
           <div
             key={index}
             className={`absolute inset-0 transition-opacity duration-700 ${
-              index === current ? "opacity-100" : "opacity-0"
+              index === current
+                ? "opacity-100 pointer-events-auto"
+                : "opacity-0 pointer-events-none"
             }`}
           >
             <BannerCard
@@ -80,6 +86,7 @@ export default function BannerCarousel() {
               ctaHref={banner.ctaHref}
               ctaText={banner.ctaText}
               image={banner.image}
+              priority={index === 0}
             />
           </div>
         ))}
@@ -90,12 +97,13 @@ export default function BannerCarousel() {
         {banners.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full cursor-pointer ${
+            className={`w-3 h-3 rounded-full cursor-pointer hover:bg-[#3B82F6] transition-colors duration-300 ${
               index === current
                 ? "bg-[#3B82F6]"
                 : "bg-white border border-[#3B82F6]"
             }`}
             onClick={() => setCurrent(index)}
+            suppressHydrationWarning
           ></button>
         ))}
       </div>
@@ -103,11 +111,13 @@ export default function BannerCarousel() {
       {/* Prev / Next Buttons */}
       <button
         onClick={goPrev}
+        suppressHydrationWarning
         className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/30 p-3 rounded-full hover:bg-black/60 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
       >
         <FaAngleLeft className="text-2xl text-white" />
       </button>
       <button
+        suppressHydrationWarning
         onClick={goNext}
         className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/30 p-3 rounded-full hover:bg-black/60 cursor-pointer opacity-0 group-hover:opacity-100"
       >

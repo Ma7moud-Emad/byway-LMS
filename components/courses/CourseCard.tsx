@@ -44,6 +44,7 @@ export default async function CourseCard({
           src={poster}
           alt={title}
           fill
+          sizes="100%"
           className="object-top object-cover"
         />
       </figure>

@@ -51,13 +51,14 @@ export default async function InstructorDetails({ id }: { id: string }) {
     <section>
       <div className="p-6">
         <div className="flex items-center space-x-4 border-b-2 border-b-gray-300 pb-4">
-          <div className="rounded-full size-25 overflow-hidden">
+          <div className="rounded-full size-25 overflow-hidden relative">
             <Image
               src={avatar_url}
               alt={full_name}
-              width={100}
-              height={100}
+              fill
+              sizes="100%"
               className="object-cover object-top"
+              priority
             />
           </div>
           <div>

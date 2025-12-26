@@ -2,8 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
+
 import { supabase } from "@/lib/supabase";
+
 import FilterResultsServer from "./FilterResultsServer";
+
 import { CourseCardProps } from "@/lib/types";
 
 export default function FilterResultsClient() {

@@ -1,9 +1,11 @@
 "use client";
 
 import { useState } from "react";
+
 import FilterSidebar from "@/components/courses/filteration/FilterSidebar";
 import SortMenu from "@/components/courses/filteration/SortMenu";
 import FilterHeader from "./FilterHeader";
+
 import { LuX } from "react-icons/lu";
 
 export default function FilterPageClient({
@@ -45,6 +47,7 @@ export default function FilterPageClient({
             <div className="flex items-center justify-between p-4 border-b border-gray-500 max-md:w-3/4 bg-white">
               <h3 className="font-semibold">Filters</h3>
               <button
+                suppressHydrationWarning
                 onClick={() => setFilterOpen(false)}
                 className="text-lg cursor-pointer"
               >

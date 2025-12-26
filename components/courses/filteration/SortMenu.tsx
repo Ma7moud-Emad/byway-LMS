@@ -1,4 +1,5 @@
 "use client";
+
 import { SortOptions } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
 
