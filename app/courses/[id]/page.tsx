@@ -3,33 +3,45 @@ import CourseHeader from "@/components/courses/course/CourseHeader";
 import CourseSidebar from "@/components/courses/course/CourseSidebar";
 import Curriculum from "@/components/courses/course/Curriculum";
 import InstructorCard from "@/components/courses/course/InstructorCard";
-import LearningOutcomes from "@/components/courses/course/LearningOutcomes";
-import { supabase } from "@/lib/supabase";
+import Outcomes_requirements_tags from "./../../../components/courses/course/Outcomes_requirements_tags";
 
-type Props = {
-  params: Promise<{
-    id: string;
-  }>;
-};
+import { supabaseServer } from "@/lib/supabase/server";
 
-export default async function Page({ params }: Props) {
+import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+
+export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
+  const supabase = await supabaseServer();
 
+  // get user session
+  const { data: userData } = await supabase.auth.getUser();
+
+  // get user role
+  const { data: profileUserData } = await supabase
+    .from("profiles")
+    .select("role")
+    .eq("id", userData?.user?.id)
+    .single();
+
+  // get enrolled courses
+  const { data: enrolledCourses } = await supabase
+    .from("enrollments")
+    .select("*")
+    .eq("course_id", id)
+    .eq("student_id", userData?.user?.id)
+    .single();
+
+  // course info
   const { data: course } = await supabase
     .from("courses")
-    .select("*")
+    .select(`*`)
     .eq("id", id)
     .single();
 
+  // instructor info
   const { data: instructor } = await supabase
     .from("instructors")
-    .select("*")
-    .eq("id", course.instructor_id)
-    .single();
-
-  const { data: instructorProfile } = await supabase
-    .from("profiles")
-    .select("*")
+    .select(`*,profiles(*)`)
     .eq("id", course.instructor_id)
     .single();
 
@@ -39,47 +51,101 @@ export default async function Page({ params }: Props) {
       `
     *,
     lessons (*)
-  `
+  `,
     )
     .eq("course_id", course.id)
-    .order("order_number", { ascending: false });
-  console.log(modules);
+    .order("order_number", { ascending: true });
+
+  const {
+    title,
+    short_description,
+    promo_video,
+    description,
+    price,
+    discount_price,
+    total_lessons,
+    total_time_minutes,
+    languages,
+    learning_outcomes,
+    level,
+    requirements,
+    tags,
+    is_free,
+    instructor_id,
+  } = course;
+
+  const {
+    headline,
+    avg_rating,
+    total_students,
+    profiles: { full_name, username, avatar_url },
+  } = instructor;
 
   return (
     <div className="bg-gray-50 min-h-screen">
       <CourseHeader
-        title={course.title}
-        shortDescription={course.short_description}
-        avgRating={course.avg_rating}
-        totalStudents={course.total_students}
-        level={course.level}
-        promoVideo={course.promo_video}
+        title={title}
+        shortDescription={short_description}
+        avgRating={avg_rating}
+        totalStudents={total_students}
+        level={level}
+        promoVideo={promo_video}
+        totalLessons={total_lessons}
+        totalMinutes={total_time_minutes}
+        languages={languages}
       />
 
-      <div className="container mx-auto px-6 py-12 grid lg:grid-cols-3 gap-10">
-        <div className="lg:col-span-2 space-y-12">
-          <CourseDescription description={course.description} />
-          <LearningOutcomes items={course.learning_outcomes} />
-          <Curriculum modules={modules ?? []} />
+      <div className="container mx-auto px-6 py-6 grid lg:grid-cols-3 gap-10">
+        <div className="lg:col-span-2 space-y-6">
+          <CourseDescription description={description} />
 
-          <InstructorCard
-            name={instructorProfile.full_name}
-            headline={instructor.headline}
-            bio={instructor.bio}
-            expertise={instructor.expertise}
-            avgRating={instructor.avg_rating}
-            totalStudents={instructor.total_students}
-            id={instructor.id}
+          <Outcomes_requirements_tags
+            title="What you will learn"
+            icon={FiCheckCircle}
+            items={learning_outcomes}
+          />
+          <Outcomes_requirements_tags
+            title="Requirements"
+            icon={FiAlertCircle}
+            items={requirements}
+            iconColor="text-gray-900"
+          />
+          <Curriculum
+            modules={modules ?? []}
+            isEnrolled={
+              enrolledCourses || userData?.user?.id === course.instructor_id
+                ? true
+                : false
+            }
+            isFree={is_free}
+          />
+
+          {userData?.user?.id !== course.instructor_id ? (
+            <InstructorCard
+              id={instructor_id}
+              name={full_name}
+              avatar={avatar_url}
+              headline={headline}
+              username={username}
+            />
+          ) : (
+            ""
+          )}
+          <Outcomes_requirements_tags
+            title="Tags"
+            items={tags}
+            iconColor="text-blue-500"
+            isFlex={true}
           />
         </div>
 
-        <CourseSidebar
-          price={course.price}
-          discountPrice={course.discount_price}
-          totalLessons={course.total_lessons}
-          totalMinutes={course.total_time_minutes}
-          languages={course.languages}
-        />
+        {!enrolledCourses && (
+          <CourseSidebar
+            price={price}
+            discountPrice={discount_price}
+            role={profileUserData ? profileUserData.role : null}
+          />
+        )}
       </div>
     </div>
   );

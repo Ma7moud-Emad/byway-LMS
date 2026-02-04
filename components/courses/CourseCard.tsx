@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import { CourseCardProps } from "@/lib/types";
 import { RatingStars } from "../shared/Stars";
 import Link from "next/link";
@@ -54,7 +54,9 @@ export default async function CourseCard({
         }`}
       >
         <div className={`${type !== "home" && "md:col-span-2"}`}>
-          <h4 className="font-bold text-xl text-gray-900 pt-2">{title}</h4>
+          <h4 className="font-bold text-xl text-gray-900 pt-2 line-clamp-1">
+            {title}
+          </h4>
 
           {role !== "instructor" && (
             <p className={`text-sm text-gray-700 ${type !== "home" && "mb-2"}`}>
@@ -71,8 +73,8 @@ export default async function CourseCard({
             </p>
           </section>
           <p className="text-sm text-gray-700">
-            {total_time_minutes / 60} Total Hours. {total_lessons} Lectures.{" "}
-            {level}
+            {Math.round(total_time_minutes / 60)} Total Hours. {total_lessons}{" "}
+            Lectures. {level}
           </p>
         </div>
         <div className="flex gap-2">

@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import HomeContainer from "../shared/HomeContainer";
 import InstructorCard from "./InstructorCard";
 
@@ -8,7 +8,7 @@ export default async function InstructorsContainer() {
     .select("*")
     .limit(4);
   return (
-    <HomeContainer title="Top Instructors" ctaHref="instructors">
+    <HomeContainer title="Most Popular Instructors" ctaHref="instructors">
       <div className="py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {instructors?.map((item) => (
           <InstructorCard

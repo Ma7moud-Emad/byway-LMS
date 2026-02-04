@@ -47,6 +47,10 @@ export type InputProps<T extends FieldValues> = {
   register: UseFormRegister<T>;
   error?: FieldError;
   autocomplete?: string;
+  accept?: string;
+  isReadOnly?: boolean;
+  feildType?: "input" | "textarea";
+  rows?: number;
 };
 
 export type SignFormProps<T extends FieldValues> = {
@@ -144,6 +148,7 @@ export type Lesson = {
   is_free_preview: boolean;
   video_url?: string;
   description: string;
+  order_number: number;
 };
 
 export type Module = {
@@ -159,13 +164,14 @@ export type CourseHeaderProps = {
   totalStudents: number;
   level: string;
   promoVideo: string;
+  totalLessons: number;
+  totalMinutes: number;
+  languages: string[];
 };
 export type CourseProps = {
   price: number;
   discountPrice: number;
-  totalLessons: number;
-  totalMinutes: number;
-  languages: string[];
+  role: string | null;
 };
 export type ShortLesson = {
   title: string;
@@ -175,9 +181,87 @@ export type ShortLesson = {
 export type InstruictorProps = {
   name: string;
   headline: string;
-  bio: string;
-  expertise: string[];
-  avgRating: number;
-  totalStudents: number;
+  username: string;
   id: string;
+  avatar: string;
 };
+// create course
+const twoWords = (val: string) => val.trim().split(/\s+/).length >= 2;
+const numberField = (min: number, max?: number) =>
+  z.preprocess(
+    (val) => (val === "" ? 0 : Number(val)),
+    max !== undefined ? z.number().min(min).max(max) : z.number().min(min),
+  );
+
+export const courseSchema = z
+  .object({
+    title: z.string().min(2, "Title must be at least 2 letters"),
+
+    slug: z.string().regex(/^\S+$/, "Slug must not contain spaces"),
+
+    description: z
+      .string()
+      .refine(twoWords, "Description must contain at least 2 words"),
+
+    short_description: z
+      .string()
+      .refine(twoWords, "Short description must contain at least 2 words"),
+
+    price: numberField(0, 1000),
+    discount_price: numberField(0),
+    totalTime: numberField(1),
+    level: z.enum(["beginner", "intermediate", "advanced"]),
+
+    status: z.enum(["published", "archived", "draft"]),
+
+    program: z.enum([
+      "Art & Design",
+      "Business",
+      "IT & Software",
+      "Languages",
+      "Programming",
+    ]),
+
+    languages: z
+      .array(z.string().min(1, "Language cannot be empty"))
+      .min(1, "At least one language is required"),
+
+    requirements: z.string().min(1, "At least one requirement is required"),
+
+    learning_outcomes: z
+      .string()
+      .min(1, "At least one learning outcome is required"),
+
+    tags: z.string().min(1, "At least one tag is required"),
+
+    isFeatured: z.boolean(),
+
+    // Files
+    poster: z
+      .any()
+      .refine(
+        (files) => files instanceof FileList && files.length === 1,
+        "Poster image is required",
+      )
+      .refine(
+        (files) => files?.[0]?.type.startsWith("image/"),
+        "Poster must be an image",
+      ),
+
+    promo_video: z
+      .any()
+      .refine(
+        (files) => files instanceof FileList && files.length === 1,
+        "Promo video is required",
+      )
+      .refine(
+        (files) => files?.[0]?.type.startsWith("video/"),
+        "Promo video must be a video",
+      ),
+  })
+  .refine((data) => data.discount_price <= data.price, {
+    message: "Discount price cannot be greater than price",
+    path: ["discountPrice"],
+  });
+
+export type CourseFormData = z.infer<typeof courseSchema>;

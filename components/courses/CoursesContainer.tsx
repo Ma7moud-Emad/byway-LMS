@@ -1,4 +1,4 @@
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import HomeContainer from "../shared/HomeContainer";
 import CourseCard from "./CourseCard";
 

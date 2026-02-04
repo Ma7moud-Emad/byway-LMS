@@ -3,19 +3,22 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
 
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 
 import FilterResultsServer from "./FilterResultsServer";
 
 import { CourseCardProps } from "@/lib/types";
 
 export default function FilterResultsClient() {
+  // to get filters
   const searchParams = useSearchParams();
 
+  //
   const [courses, setCourses] = useState<CourseCardProps[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
+  // call supabase api by filters
   useEffect(() => {
     async function fetchCourses() {
       setLoading(true);

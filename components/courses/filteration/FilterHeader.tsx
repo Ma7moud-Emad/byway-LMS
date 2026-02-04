@@ -18,6 +18,7 @@ export default function FilterHeader({
   return (
     <header className="flex items-center justify-between mb-4 w-fit">
       <div className="flex gap-2">
+        {/* filter button is responsible for opening or closing the menu. */}
         <button
           suppressHydrationWarning
           onClick={toggleFilter}
@@ -27,6 +28,7 @@ export default function FilterHeader({
           Filter
         </button>
 
+        {/* sort button is responsible for opening or closing the menu. */}
         <button
           suppressHydrationWarning
           onClick={toggleSort}

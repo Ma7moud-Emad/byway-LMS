@@ -15,6 +15,7 @@ export default function FilterItem({
   items: string[];
   type?: "checkbox" | "radio";
 }) {
+  // The filtering process relied on search params
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -25,12 +26,15 @@ export default function FilterItem({
   const [open, setOpen] = useState(true);
   const [visibleCount, setVisibleCount] = useState(4);
 
+  // funcution control search params by selected filters
   const toggleValue = (value: string) => {
     let newValues: string[];
 
+    // if radio input replace new value
     if (type === "radio") {
       newValues = [value];
     } else {
+      // if checkbox input add select filter on old filter
       newValues = selectedValues.includes(value)
         ? selectedValues.filter((v) => v !== value)
         : [...selectedValues, value];
@@ -48,6 +52,7 @@ export default function FilterItem({
     router.push(`?${params.toString()}`);
   };
 
+  // function if options in filter more than 4 hide when click in more button show next 4 option
   const handleShowMore = () => {
     if (visibleCount >= items.length) {
       setVisibleCount(4);
@@ -61,6 +66,7 @@ export default function FilterItem({
       {/* ===== Header ===== */}
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-semibold capitalize">{title}</h3>
+        {/* button is responsible for hide or show options */}
         <button
           suppressHydrationWarning
           onClick={() => setOpen((v) => !v)}
@@ -74,6 +80,7 @@ export default function FilterItem({
       {/* ===== Body ===== */}
       {open && (
         <>
+          {/* options */}
           <ul className="space-y-2">
             {items.slice(0, visibleCount).map((item) => (
               <li key={item}>
@@ -93,6 +100,7 @@ export default function FilterItem({
 
           {/* ===== Footer ===== */}
           {items.length > 4 && (
+            // button show first 4 options when options more than for show more button is responsible for show next 4 option when arrive the end show less button is responsible for shoe firts 4 options
             <button
               suppressHydrationWarning
               onClick={handleShowMore}

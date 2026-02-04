@@ -13,19 +13,23 @@ export default function FilterPageClient({
 }: {
   children: React.ReactNode;
 }) {
+  // states to open or close menu
   const [filterOpen, setFilterOpen] = useState(true);
   const [sortOpen, setSortOpen] = useState(false);
 
+  // function open or close filter menu
   const toggleFilter = () => {
     setFilterOpen((v) => !v);
   };
 
+  // function open or close sort menu
   const toggleSort = () => {
     setSortOpen((v) => !v);
   };
 
   return (
     <div className="min-h-screen px-6 py-4">
+      {/* header two buttons filter and sort  */}
       <FilterHeader
         filterOpen={filterOpen}
         toggleFilter={toggleFilter}
@@ -33,6 +37,7 @@ export default function FilterPageClient({
       />
 
       <div className="relative flex">
+        {/* filter options */}
         <aside
           className={`
                     hidden md:block transition-all duration-300
@@ -66,6 +71,7 @@ export default function FilterPageClient({
             <SortMenu setIsSort={setSortOpen} />
           </div>
         )}
+        {/* display result courses */}
         <main
           className={`
             transition-all duration-300

@@ -1,5 +1,9 @@
+"use client";
+
 import { CourseHeaderProps } from "@/lib/types";
 import { FaStar } from "react-icons/fa";
+import { GoVideo } from "react-icons/go";
+import { LuLanguages, LuTimer } from "react-icons/lu";
 import { PiStudentFill } from "react-icons/pi";
 import { SiTarget } from "react-icons/si";
 
@@ -10,7 +14,21 @@ export default function CourseHeader({
   totalStudents,
   level,
   promoVideo,
+  totalLessons,
+  totalMinutes,
+  languages,
 }: CourseHeaderProps) {
+  const ul_list = [
+    {
+      icon: PiStudentFill,
+      title: `${totalStudents.toLocaleString()} students`,
+    },
+    { icon: SiTarget, title: level },
+    { icon: FaStar, title: avgRating },
+    { icon: GoVideo, title: `${totalLessons} lessons` },
+    { icon: LuTimer, title: `${Math.round(totalMinutes / 60)} hours` },
+    { icon: LuLanguages, title: languages.join(" / ") },
+  ];
   return (
     <section className="bg-gray-900 text-white">
       <div className="container mx-auto px-6 py-12 grid md:grid-cols-2 gap-8">
@@ -18,23 +36,24 @@ export default function CourseHeader({
           <h1 className="text-4xl font-bold mb-4">{title}</h1>
           <p className="text-gray-300 mb-6">{shortDescription}</p>
 
-          <div className="flex flex-wrap gap-4 text-sm text-gray-300">
-            <span className="flex items-center gap-1 capitalize">
-              <FaStar className="text-yellow-500 text-lg" />
-              {avgRating}
-            </span>
-            <span className="flex items-center gap-1 capitalize">
-              <PiStudentFill className="text-xl text-white" />
-              {totalStudents.toLocaleString()} students
-            </span>
-            <span className="flex items-center gap-1 capitalize">
-              <SiTarget className="text-lg text-white" /> {level}
-            </span>
-          </div>
+          <ul className="text-sm text-gray-300 grid grid-cols-3 gap-y-4">
+            {ul_list.map((li, index) => (
+              <li key={index} className="flex items-center gap-1 capitalize">
+                <li.icon className="text-gray-300 text-lg" />
+                {li.title}
+              </li>
+            ))}
+          </ul>
         </div>
 
         <div className="rounded-xl overflow-hidden shadow-lg">
-          <iframe src={promoVideo} className="w-full h-64" allowFullScreen />
+          <video
+            src={promoVideo}
+            className="w-full h-64"
+            controls
+            controlsList="nodownload "
+            onContextMenu={(e) => e.preventDefault()}
+          />
         </div>
       </div>
     </section>

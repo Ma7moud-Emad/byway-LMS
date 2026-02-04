@@ -9,7 +9,7 @@ import SignForm from "@/components/forms/SignForm";
 import UserForm from "@/components/forms/UserForm";
 
 import toast from "react-hot-toast";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 
 import { SignData, UserData } from "@/lib/types";
 import { signSchema, userSchema } from "@/lib/schema";
@@ -17,13 +17,15 @@ import { signSchema, userSchema } from "@/lib/schema";
 import image from "@/public/signup.svg";
 
 export default function Page() {
-  const [orderForm, setOrderForm] = useState(2);
+  const [orderForm, setOrderForm] = useState(1);
   const [userId, setUserId] = useState<string | null>(null);
 
+  // use react hook form library form one
   const signForm = useForm<SignData>({
     resolver: zodResolver(signSchema),
   });
 
+  // use react hook form library form one
   const userForm = useForm<UserData>({
     resolver: zodResolver(userSchema),
   });
@@ -52,16 +54,19 @@ export default function Page() {
     if (isEmailExist) {
       toast.error(`Email already exists.`);
     } else {
-      // sign up
+      // sign up with supabase
       const { error, data } = await supabase.auth.signUp({
         email,
         password,
       });
 
+      // handel error by toast library
       if (error) {
         toast.error(`${error?.message}, Try again`);
       } else {
         toast.success("Congratulations!, Complete next step");
+
+        // complete sign up next step fill profile info
         setOrderForm(2);
         if (data?.user?.id) {
           setUserId(data.user.id);
@@ -101,7 +106,7 @@ export default function Page() {
         .eq("id", userId)
         .select();
       if (error) {
-        // del avatar when profile info is error
+        // delete avatar when profile info is error
         const { error } = await supabase.storage
           .from("avatars")
           .remove([
@@ -112,7 +117,7 @@ export default function Page() {
         return;
       }
       toast.success("welcome to byway");
-      // setOrderForm(3)
+      // setOrderForm(3) work when user is instructor
     }
   };
   return (
@@ -122,6 +127,7 @@ export default function Page() {
           Create Your Account
         </h1>
 
+        {/* reusable form component >> create user by email and password */}
         {orderForm == 1 ? (
           <SignForm<SignData>
             register={signForm.register}
@@ -132,6 +138,7 @@ export default function Page() {
             isSubmitting={signForm.formState.isSubmitting}
           />
         ) : (
+          // next step enter profile info
           <UserForm<UserData>
             register={userForm.register}
             errors={userForm.formState.errors}

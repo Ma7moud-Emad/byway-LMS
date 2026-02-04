@@ -5,8 +5,10 @@ export default function CourseDescription({
 }) {
   return (
     <section>
-      <h2 className="text-2xl font-semibold mb-4">About this course</h2>
-      <p className="text-gray-700 leading-relaxed whitespace-pre-line">
+      <h2 className="text-2xl font-semibold mb-2 text-gray-900">
+        About this course
+      </h2>
+      <p className="text-gray-500 leading-relaxed whitespace-pre-line">
         {description}
       </p>
     </section>

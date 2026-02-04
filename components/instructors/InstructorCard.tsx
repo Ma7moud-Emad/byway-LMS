@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 import Link from "next/link";
 import { FaStar } from "react-icons/fa";
 
@@ -43,6 +43,7 @@ export default async function InstructorCard({
           fill
           sizes="100%"
           className="object-top object-cover"
+          unoptimized
         />
       </figure>
       <div>

@@ -2,7 +2,7 @@ import { ReactNode } from "react";
 import Image from "next/image";
 import Link from "next/link";
 
-import { supabase } from "@/lib/supabase";
+import { supabase } from "@/lib/supabase/client";
 
 import { FaPhoneAlt, FaStar, FaUser } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
@@ -50,7 +50,7 @@ export default async function InstructorDetails({ id }: { id: string }) {
   return (
     <section>
       <div className="p-6">
-        <div className="flex items-center space-x-4 border-b-2 border-b-gray-300 pb-4">
+        <div className="flex flex-col sm:flex-row sm:items-center space-x-4 border-b-2 border-b-gray-300 pb-4">
           <div className="rounded-full size-25 overflow-hidden relative">
             <Image
               src={avatar_url}
@@ -58,7 +58,7 @@ export default async function InstructorDetails({ id }: { id: string }) {
               fill
               sizes="100%"
               className="object-cover object-top"
-              priority
+              unoptimized
             />
           </div>
           <div>
@@ -116,24 +116,26 @@ export default async function InstructorDetails({ id }: { id: string }) {
               {avg_rating}
             </ListItem>
           </List>
-          <List title="contact">
-            <ListItem>
-              <MdEmail />
-              <Link href={`mailto:${{ email }}`} className="underline">
-                {email}
-              </Link>
-            </ListItem>
-            <ListItem>
-              <FaPhoneAlt />
-              <Link href={`tel:${{ phone }}`} className="underline">
-                {phone}
-              </Link>
-            </ListItem>
-            <ListItem>
-              <FaUser />
-              {username}
-            </ListItem>
-          </List>
+          <div className="col-span-3 xl:col-span-1">
+            <List title="contact">
+              <ListItem>
+                <MdEmail />
+                <Link href={`mailto:${{ email }}`} className="underline">
+                  {email}
+                </Link>
+              </ListItem>
+              <ListItem>
+                <FaPhoneAlt />
+                <Link href={`tel:${{ phone }}`} className="underline">
+                  {phone}
+                </Link>
+              </ListItem>
+              <ListItem>
+                <FaUser />
+                {username}
+              </ListItem>
+            </List>
+          </div>
         </div>
       </div>
       <HomeContainer title="Instructor Courses">

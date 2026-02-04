@@ -1,16 +1,9 @@
-import Footer from "@/components/layouts/Footer";
-import Header from "@/components/layouts/Header";
+import GeneralLayout from "@/components/layouts/GeneralLayout";
 
 export default function CoursesLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  return (
-    <>
-      <Header />
-      <main>{children}</main>
-      <Footer />
-    </>
-  );
+  return <GeneralLayout>{children}</GeneralLayout>;
 }
