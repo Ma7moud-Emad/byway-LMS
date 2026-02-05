@@ -26,57 +26,62 @@ export default function Page() {
   // courses state
   const [courses, setCourses] = useState<Course[]>([]);
 
-  // prepare query
-  const query = supabase
-    .from("enrollments")
-    .select(
-      `
-    progress_percentage,
-    status,
-    courses (
-      id,
-      title,
-      short_description,
-      poster 
-    )
-  `,
-    )
-    .eq("student_id", id);
-
-  switch (activeFilter) {
-    case "complete":
-      query.eq("status", "completed");
-      break;
-    case "active":
-      query.eq("status", "active");
-      break;
-    case "cancel":
-      query.eq("status", "canceled");
-      break;
-  }
-
   // handle filter change
   function handleQueryChange(query: string) {
     setActiveFilter(query);
   }
-
-  // query enrollments on filter change
   useEffect(() => {
     async function fetchEnrollments() {
-      const { data, error } = await query;
+      let query = supabase
+        .from("enrollments")
+        .select(
+          `
+        progress_percentage,
+        status,
+        courses (
+          id,
+          title,
+          short_description,
+          poster 
+        )
+      `,
+        )
+        .eq("student_id", id);
+
+      switch (activeFilter) {
+        case "complete":
+          query = query.eq("status", "completed");
+          break;
+        case "active":
+          query = query.eq("status", "active");
+          break;
+        case "cancel":
+          query = query.eq("status", "canceled");
+          break;
+      }
+
+      const { data, error } = (await query) as {
+        data: Course[] | null;
+        error: Error | null;
+      };
 
       if (error) {
         console.error("Error fetching enrollments:", error);
         return;
       }
-      setCourses(data);
+
+      if (data) {
+        setCourses(data);
+      }
     }
+
     fetchEnrollments();
-  }, [activeFilter]);
+  }, [activeFilter, id]);
 
   return (
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-4">My Courses</h1>
+
       <header className="bg-white p-2 rounded-sm mb-6 shadow ">
         <ul className="text-gray-900 font-medium grid grid-cols-4 gap-6 text-center">
           {["courses", "complete", "active", "cancel"].map((query) => (
@@ -94,7 +99,8 @@ export default function Page() {
           ))}
         </ul>
       </header>
-      {courses?.length ? (
+
+      {courses.length > 0 ? (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {courses.map((course) => {
             const {

@@ -53,7 +53,7 @@ type Lesson = {
   duration_minutes: number;
   order_number: number;
   is_free_preview: boolean;
-  resources: string[];
+  resources: { value: string }[];
 };
 
 export type Module = {
@@ -115,6 +115,7 @@ export default function CreateForm({ course }: { course?: Course }) {
   });
 
   // form submission
+
   const onSubmit: SubmitHandler<Course> = async (data) => {
     // Destructuring
     const {
@@ -238,7 +239,7 @@ export default function CreateForm({ course }: { course?: Course }) {
             duration_minutes: lesson.duration_minutes,
             order_number: lesson.order_number,
             is_free_preview: lesson.is_free_preview,
-            resources: lesson.resources,
+            resources: Covert(lesson.resources),
           })),
         );
 
@@ -579,7 +580,11 @@ export default function CreateForm({ course }: { course?: Course }) {
                 </div>
 
                 {/* Lessons */}
-                <LessonsForm moduleIndex={modIndex} control={control} />
+                <LessonsForm
+                  moduleIndex={modIndex}
+                  control={control}
+                  register={register}
+                />
               </div>
             )}
           </div>

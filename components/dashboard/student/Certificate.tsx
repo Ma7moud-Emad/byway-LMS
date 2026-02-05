@@ -9,12 +9,14 @@ type CertificateProps = {
   student: string;
   course: string;
   date: string;
+  instructor: string;
 };
 
 export default function Certificate({
   student,
   course,
   date,
+  instructor,
 }: CertificateProps) {
   const certRef = useRef<HTMLDivElement>(null);
 
@@ -55,10 +57,10 @@ export default function Certificate({
           </h3>
 
           <div className="absolute bottom-[8%] left-[8%] right-[8%] flex justify-between text-[1.2vw] md:text-sm">
-            {/* <div>
+            <div>
               <p className="font-semibold capitalize">{instructor}</p>
               <p className="text-[#6b7280]">Instructor</p>
-            </div> */}
+            </div>
             <div className="text-right">
               <p className="font-semibold text-center">{date}</p>
               <p className="text-[#6b7280]">Byway academy </p>

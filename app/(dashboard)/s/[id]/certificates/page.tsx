@@ -6,19 +6,37 @@ import { supabase } from "@/lib/supabase/client";
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
-  const { data: certificates, error } = await supabase
+  const { data: certificates, error } = (await supabase
     .from("certificates")
     .select(
-      "*,courses(*,instructors!courses_instructor_id_fkey (*,profiles(*))),profiles(*)",
+      `id,
+      issued_at,
+      profiles(full_name),
+      courses(title,instructors!courses_instructor_id_fkey (profiles(full_name)))`,
     )
-    .eq("user_id", id);
+    .eq("user_id", id)) as {
+    data: Array<{
+      id: string;
+      issued_at: string;
+      profiles: {
+        full_name: string;
+      };
+      courses: {
+        title: string;
+        instructors: {
+          profiles: {
+            full_name: string;
+          };
+        };
+      };
+    }> | null;
+    error: Error | null;
+  };
 
   if (error) {
     console.error("Error fetching certificates:", error);
     return <div>Error loading certificates.</div>;
   }
-
-  console.log(certificates);
 
   return (
     <div>
@@ -29,16 +47,22 @@ export default async function page({ params }: { params: { id: string } }) {
             const {
               id,
               issued_at,
-              profiles: { full_name: student },
-              courses: { title: course },
+              profiles: { full_name: studentName },
+              courses: {
+                title,
+                instructors: {
+                  profiles: { full_name: instructorName },
+                },
+              },
             } = certificate;
 
             return (
               <Certificate
                 key={id}
-                student={student}
-                course={course}
+                student={studentName}
+                course={title}
                 date={formatShortDate(issued_at)}
+                instructor={instructorName}
               />
             );
           })
