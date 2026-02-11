@@ -31,7 +31,6 @@ export type Course = {
   discount_price: number;
   level: "beginner" | "intermediate" | "advanced";
   status: "published" | "archived" | "draft";
-  total_time_minutes: number;
   instructor_id: string;
   category_id: string;
   languages: { value: string }[];
@@ -125,7 +124,6 @@ export default function CreateForm({ course }: { course?: Course }) {
       slug,
       description,
       short_description,
-      total_time_minutes,
       price,
       discount_price,
       level,
@@ -156,7 +154,6 @@ export default function CreateForm({ course }: { course?: Course }) {
           slug,
           description,
           short_description,
-          total_time_minutes,
           price,
           discount_price,
           level,
@@ -174,8 +171,8 @@ export default function CreateForm({ course }: { course?: Course }) {
       .single();
 
     if (insertError) {
-      console.log(insertError);
       toast.error(insertError.message);
+      throw insertError;
     } else {
       toast.success("Course created and wait to upload poster and promo video");
 
@@ -203,8 +200,8 @@ export default function CreateForm({ course }: { course?: Course }) {
         .eq("id", insertCourse.id);
 
       if (updateError) {
-        console.log(updateError);
         toast.error(updateError.message);
+        throw updateError;
       }
 
       // upload modules
@@ -221,8 +218,8 @@ export default function CreateForm({ course }: { course?: Course }) {
         .select();
 
       if (modulesError) {
-        console.log(updateError);
         toast.error(modulesError.message);
+        throw modulesError;
       } else {
         toast.success(
           "Modules was successfully uploaded and wait for upload lessons",
@@ -247,8 +244,8 @@ export default function CreateForm({ course }: { course?: Course }) {
           await supabase.from("lessons").insert(lessons).select();
 
         if (insertLessonsError) {
-          console.log(insertLessonsError);
           toast.error(insertLessonsError.message);
+          throw insertLessonsError;
         } else {
           toast.success(
             "Lessons was successfully uploaded and wait for upload lessons video",
@@ -287,8 +284,8 @@ export default function CreateForm({ course }: { course?: Course }) {
               .eq("id", lesson.id);
 
             if (error) {
-              console.log(error);
               toast.error(error.message);
+              throw error;
             }
           }
         }
@@ -376,14 +373,6 @@ export default function CreateForm({ course }: { course?: Course }) {
           name="short_description"
           register={register}
           placeholder="Short Description"
-        />
-
-        {/* Total Time */}
-        <Input
-          type="number"
-          label="total time (minutes)"
-          name="total_time_minutes"
-          register={register}
         />
 
         {/* Price */}

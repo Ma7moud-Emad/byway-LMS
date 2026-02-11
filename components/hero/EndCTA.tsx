@@ -22,16 +22,18 @@ export default function EndCTA({
 }) {
   return (
     <div
-      className={`sm:flex ${
+      className={`max-sm:mb-10 sm:flex ${
         dir == "left" ? "flex-row" : "flex-row-reverse"
-      } sm:items-center sm:gap-8`}
+      } sm:items-center sm:gap-8 sm:justify-around`}
     >
-      <div className={`w-3/5  ${dir === "left" ? "ml-auto" : "ml-auto"}`}>
+      <div>
         <Image src={image} alt="image" className="max-sm:mb-12 " />
       </div>
-      <div className={`${dir === "right" && "max-sm:text-end"}`}>
-        <h1 className="text-gray-900 font-bold mb-0">{heading}</h1>
-        <p className="text-gray-600 mt-2 mb-4 sm:w-3/5">{paragrph}</p>
+      <div className="sm:w-[30%]">
+        <h1 className="text-gray-900 font-bold mb-0 text-2xl capitalize">
+          {heading}
+        </h1>
+        <p className="text-gray-500 mt-2 mb-4">{paragrph}</p>
         <Button>
           <Link href={ctaLink} className="flex items-center gap-2">
             <span> {ctaTitle}</span> <FaArrowRightLong />

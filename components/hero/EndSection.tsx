@@ -5,7 +5,7 @@ import image11 from "@/public/image 11.svg";
 
 export default function EndSection() {
   return (
-    <div className="p-4">
+    <div className="p-6">
       <EndCTA
         image={image10}
         heading="Become an Instructor"

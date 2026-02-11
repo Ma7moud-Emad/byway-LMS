@@ -89,7 +89,10 @@ export default function UserForm<T extends FieldValues>({
           )}
         </div>
       </div>
-      <Button type="submit">
+      <Button
+        type="submit"
+        classes="bg-gray-900 text-gray-50 w-1/2 block ml-auto"
+      >
         {isSubmitting ? <Spinner /> : <>{btnName}</>}
       </Button>
     </form>

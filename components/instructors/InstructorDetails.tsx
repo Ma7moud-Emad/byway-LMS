@@ -140,7 +140,7 @@ export default async function InstructorDetails({ id }: { id: string }) {
       </div>
       <HomeContainer title="Instructor Courses">
         {courses && courses.length > 0 ? (
-          <div className="py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+          <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
             {courses?.map((item) => (
               <CourseCard
                 key={item.id}

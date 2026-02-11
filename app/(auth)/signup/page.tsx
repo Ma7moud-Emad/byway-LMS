@@ -17,7 +17,7 @@ import { signSchema, userSchema } from "@/lib/schema";
 import image from "@/public/signup.svg";
 
 export default function Page() {
-  const [orderForm, setOrderForm] = useState(1);
+  const [orderForm, setOrderForm] = useState(2);
   const [userId, setUserId] = useState<string | null>(null);
 
   // use react hook form library form one

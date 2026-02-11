@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState } from "react";
+import { ReactNode, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 
 export default function FilterItem({
@@ -12,7 +12,7 @@ export default function FilterItem({
 }: {
   title: string;
   param: string;
-  items: string[];
+  items: { value: string; label: ReactNode }[];
   type?: "checkbox" | "radio";
 }) {
   // The filtering process relied on search params
@@ -20,9 +20,13 @@ export default function FilterItem({
   const searchParams = useSearchParams();
 
   const selectedFromParams = searchParams.get(param)?.split(",") || [];
+
   const [selectedValues, setSelectedValues] =
     useState<string[]>(selectedFromParams);
 
+  // filter setting:
+  // 1. open or close filter
+  // 2. more or less show filter options
   const [open, setOpen] = useState(true);
   const [visibleCount, setVisibleCount] = useState(4);
 
@@ -83,16 +87,16 @@ export default function FilterItem({
           {/* options */}
           <ul className="space-y-2">
             {items.slice(0, visibleCount).map((item) => (
-              <li key={item}>
+              <li key={item.value}>
                 <label className="flex gap-2 items-center cursor-pointer">
                   <input
                     type={type}
                     name={param}
-                    checked={selectedValues.includes(item)}
-                    onChange={() => toggleValue(item)}
+                    checked={selectedValues.includes(item.value)}
+                    onChange={() => toggleValue(item.value)}
                     className="cursor-pointer"
                   />
-                  <span className="capitalize">{item}</span>
+                  <span className="capitalize">{item.label}</span>
                 </label>
               </li>
             ))}

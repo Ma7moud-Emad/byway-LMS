@@ -30,9 +30,9 @@ export default function ResultCard({ course }: { course: CourseCardProps }) {
               ({course.total_reviews})
             </p>
           </section>
-          <p className="text-sm text-gray-700">
-            {course.total_time_minutes / 60} Total Hours. {course.total_lessons}
-            Lectures. {course.level}
+          <p className="text-sm text-gray-700 capitalize">
+            {Math.round(course.total_time_minutes / 60)} Total Hours.{" "}
+            {course.total_lessons} Lectures. {course.level}
           </p>
         </div>
         <div className="flex gap-2">

@@ -18,9 +18,6 @@ type Instructor = {
     facebook: string;
     linkedin: string;
   };
-  total_students: number;
-  total_courses: number;
-  avg_rating: number;
 };
 
 export default function InstructorForm({
@@ -84,24 +81,6 @@ export default function InstructorForm({
         />
       </div>
 
-      <Input
-        label="total students"
-        name="total_students"
-        register={register}
-        isReadOnly={true}
-      />
-      <Input
-        label="total courses"
-        name="total_courses"
-        register={register}
-        isReadOnly={true}
-      />
-      <Input
-        label="average rating"
-        name="avg_rating"
-        register={register}
-        isReadOnly={true}
-      />
       <Button type="submit" disabled={isSubmitting}>
         {isSubmitting ? <Spinner /> : "save change"}
       </Button>

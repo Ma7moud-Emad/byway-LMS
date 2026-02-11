@@ -18,32 +18,32 @@ export default function BannerCarousel() {
     {
       title: "Unlock Your Potential with Byway",
       description:
-        "Start your learning journey with a platform built to help you grow. Explore practical courses, expert instructors, and a personalized path that takes you closer to your goals. Whether you're a student, graduate, or looking to upgrade your skills your journey starts here.",
-      ctaHref: "/",
-      ctaText: "Start Learning Now",
+        "Start your learning journey with a platform designed to help you grow step by step and reach your goals",
+      ctaHref: "/courses",
+      ctaText: "Start Your Learning Journey",
       image: banner_1,
     },
     {
-      title: "Learn Smarter. Grow Faster.",
+      title: "Learn Smarter, Not Harder",
       description:
-        "Byway gives you high-quality learning materials, practical exercises, and a guided experience that helps you progress step by step. Choose the right path for your career and start building your future with confidence.",
-      ctaHref: "/",
-      ctaText: "Join the Journey",
+        "Learn in a structured and efficient way with clear learning paths and progress tracking to achieve real results",
+      ctaHref: "/signin",
+      ctaText: "Discover Smart Learning",
       image: banner_2,
     },
     {
-      title: "Your Skills. Your Certificate. Your Future.",
+      title: "Earn Your Certificate, Elevate Your Career",
       description:
-        "Develop real skills with accredited courses, hands-on assessments, and certificates you can proudly showcase on your profile or CV. Byway is your first step toward real career opportunities.",
-      ctaHref: "/",
+        "Gain accredited certificates to showcase your skills and open doors to new career opportunities",
+      ctaHref: "/signup",
       ctaText: "Get Certified Today",
       image: banner_3,
     },
     {
-      title: "Learning Made Simple & Fun",
+      title: "Learning Should Be Fun",
       description:
-        "Pick your favorite field, learn at your own pace, and celebrate your progress as you grow. Byway makes education flexible, enjoyable, and accessible anytime, anywhere.",
-      ctaHref: "/",
+        "Learn in an engaging and enjoyable environment, alone or with peers, and make your educational journey exciting",
+      ctaHref: "/courses",
       ctaText: "Start Your First Course",
       image: banner_4,
     },
@@ -68,7 +68,7 @@ export default function BannerCarousel() {
   };
 
   return (
-    <div className="group relative w-full">
+    <div className="group relative w-full bg-[#F8FAFC] sm:px-15">
       {/* Carousel Items */}
       <div className="relative h-[94vh] sm:h-[90vh]">
         {banners.map((banner, index) => (
@@ -97,10 +97,10 @@ export default function BannerCarousel() {
         {banners.map((_, index) => (
           <button
             key={index}
-            className={`w-3 h-3 rounded-full cursor-pointer hover:bg-[#3B82F6] transition-colors duration-300 ${
+            className={`w-3 h-3 rounded-full cursor-pointer hover:bg-gray-900 transition-colors duration-300 ${
               index === current
-                ? "bg-[#3B82F6]"
-                : "bg-white border border-[#3B82F6]"
+                ? "bg-gray-900"
+                : "bg-white border border-gray-9bg-gray-900"
             }`}
             onClick={() => setCurrent(index)}
             suppressHydrationWarning
@@ -112,14 +112,14 @@ export default function BannerCarousel() {
       <button
         onClick={goPrev}
         suppressHydrationWarning
-        className="absolute top-1/2 left-4 -translate-y-1/2 bg-black/30 p-3 rounded-full hover:bg-black/60 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
+        className="absolute top-1/2 left-4 -translate-y-1/2 bg-gray-900/50 p-3 rounded-full hover:bg-gray-900/70 cursor-pointer opacity-0 group-hover:opacity-100 transition-all duration-300"
       >
         <FaAngleLeft className="text-2xl text-white" />
       </button>
       <button
         suppressHydrationWarning
         onClick={goNext}
-        className="absolute top-1/2 right-4 -translate-y-1/2 bg-black/30 p-3 rounded-full hover:bg-black/60 cursor-pointer opacity-0 group-hover:opacity-100"
+        className="absolute top-1/2 right-4 -translate-y-1/2 bg-gray-900/50 p-3 rounded-full hover:bg-gray-900/70 cursor-pointer opacity-0 group-hover:opacity-100"
       >
         <FaAngleRight className="text-2xl text-white" />
       </button>

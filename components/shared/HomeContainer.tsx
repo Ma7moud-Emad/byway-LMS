@@ -7,7 +7,7 @@ export default function HomeContainer({
   children,
 }: HomeContainerProps) {
   return (
-    <div className="px-4">
+    <div className="p-4">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold capitalize text-gray-900">{title}</h1>
         {ctaHref && (

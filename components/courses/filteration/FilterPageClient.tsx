@@ -19,12 +19,12 @@ export default function FilterPageClient({
 
   // function open or close filter menu
   const toggleFilter = () => {
-    setFilterOpen((v) => !v);
+    setFilterOpen((curFlt) => !curFlt);
   };
 
   // function open or close sort menu
   const toggleSort = () => {
-    setSortOpen((v) => !v);
+    setSortOpen((curSort) => !curSort);
   };
 
   return (

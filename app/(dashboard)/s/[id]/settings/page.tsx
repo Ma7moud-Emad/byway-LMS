@@ -1,3 +1,4 @@
+import Settings from "@/components/dashboard/student/Settings";
 import ChangePass from "@/components/forms/ChangePass";
 import ProfileForm from "@/components/forms/ProfileForm";
 import { supabase } from "@/lib/supabase/client";
@@ -13,10 +14,11 @@ export default async function page({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900">Profile</h1>
-      <ProfileForm profile={data} />
-      <h1 className="text-2xl font-bold text-gray-900 mt-4">Change Password</h1>
-      <ChangePass />
+      <h1 className="text-2xl font-bold text-gray-900">Settings</h1>
+      <Settings
+        childOne={<ProfileForm profile={data} />}
+        childTwo={<ChangePass />}
+      />
     </div>
   );
 }

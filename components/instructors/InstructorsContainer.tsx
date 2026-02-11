@@ -9,7 +9,7 @@ export default async function InstructorsContainer() {
     .limit(4);
   return (
     <HomeContainer title="Most Popular Instructors" ctaHref="instructors">
-      <div className="py-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6">
         {instructors?.map((item) => (
           <InstructorCard
             key={item.id}

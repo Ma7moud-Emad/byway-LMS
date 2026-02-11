@@ -62,6 +62,7 @@ export type SignFormProps<T extends FieldValues> = {
 };
 
 export type CategoryCardProps = {
+  id: string;
   title: string;
   count: number;
   Icon: IconType;
@@ -134,7 +135,7 @@ export type instructorDetails = {
 export type Filter = {
   title: string;
   param: string;
-  items: string[];
+  items: { value: string; label: ReactNode }[];
   type?: "radio" | "checkbox";
 };
 export type SortOptions = {

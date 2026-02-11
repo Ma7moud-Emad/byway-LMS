@@ -10,7 +10,7 @@ type ButtonProps = {
 
 export default function Button({
   children,
-  classes = "bg-blue-700 transition-colors duration-150 hover:bg-blue-800 text-gray-50",
+  classes = "bg-gray-900 text-gray-50",
   type = "button",
   disabled = false,
   clickedFun,

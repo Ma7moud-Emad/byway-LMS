@@ -30,7 +30,7 @@ export default function BannerCard({
         {ctaHref && (
           <Link
             href={ctaHref}
-            className="rounded-sm bg-[#3B82F6] text-gray-50 font-semibold px-4 py-2 inline-block hover:bg-[#004eca] transition-colors duration-300"
+            className="rounded-sm bg-gray-900 text-gray-50 font-semibold px-4 py-2 inline-block"
           >
             {ctaText}
           </Link>

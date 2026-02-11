@@ -29,18 +29,21 @@ export default function FilterResultsClient() {
       // ===== Rating =====
       const rating = searchParams.get("rating");
       if (rating) {
-        const value = Number(rating.replace("up to ", ""));
-        query = query.lte("avg_rating", value);
+        query = query
+          .gte("avg_rating", Number(rating) - 1)
+          .lte("avg_rating", rating);
       }
 
       // ===== Total Hours =====
       const totalHours = searchParams.get("total_hours");
       if (totalHours) {
-        const value =
-          totalHours === "25+"
-            ? 1500
-            : Number(totalHours.replace("up to ", "")) * 60;
-        query = query.lte("total_time_minutes", value);
+        if (totalHours == "+10") {
+          query = query.gte("total_time_minutes", 10 * 60);
+        } else {
+          query = query
+            .gte("total_time_minutes", Number(totalHours) * 60 - 60)
+            .lte("total_time_minutes", Number(totalHours) * 60);
+        }
       }
 
       // ===== Level =====
@@ -55,19 +58,16 @@ export default function FilterResultsClient() {
         query = query.overlaps("languages", language.split(","));
       }
 
+      // ===== Programs =====
+      const programs = searchParams.get("programs");
+      if (programs) {
+        query = query.eq("category_id", programs);
+      }
+
       // ===== Price =====
       const price = searchParams.get("price");
       if (price === "free") query = query.eq("price", 0);
       if (price === "paid") query = query.gt("price", 0);
-
-      // ===== Discount =====
-      const discount = searchParams.get("discount");
-      if (discount) {
-        const maxDiscount = Number(
-          discount.replace("up to ", "").replace("%", "")
-        );
-        query = query.lte("discount_price", maxDiscount);
-      }
 
       // ===== Sort =====
       const sort = searchParams.get("sort");
