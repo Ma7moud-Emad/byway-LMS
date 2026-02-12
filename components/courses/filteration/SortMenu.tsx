@@ -2,11 +2,12 @@
 
 import { SortOptions } from "@/lib/types";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Dispatch, SetStateAction } from "react";
 
 export default function SortMenu({
   setIsSort,
 }: {
-  setIsSort: (value: boolean) => void;
+  setIsSort: Dispatch<SetStateAction<boolean>>;
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -30,9 +31,9 @@ export default function SortMenu({
           key={option.value}
           onClick={() => {
             setSort(option.value);
-            setIsSort(false);
+            setIsSort((val) => !val);
           }}
-          className="block w-full text-left px-4 py-2 hover:bg-gray-100 cursor-pointer"
+          className={`block w-full text-left px-4 py-2 hover:bg-blue-400/50 cursor-pointer transition-colors duration-200 ${searchParams.get("sort") == option.value && "bg-blue-400"}`}
         >
           {option.label}
         </button>

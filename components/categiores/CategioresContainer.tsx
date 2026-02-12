@@ -14,7 +14,7 @@ export default async function CategoriesContainer() {
 
   return (
     <HomeContainer title="programs">
-      <div className="pt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+      <div className="pt-6 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
         {categories?.map((item) => {
           const Icon = iconsMap[item.icon];
           return (

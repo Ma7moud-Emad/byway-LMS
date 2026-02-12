@@ -32,6 +32,15 @@ export default function CourseHeader({
   return (
     <section className="bg-gray-900 text-white">
       <div className="container mx-auto px-6 py-12 grid md:grid-cols-2 gap-8">
+        <div className="rounded-xl overflow-hidden shadow-lg">
+          <video
+            src={promoVideo}
+            className="w-full h-64 bg-black/50"
+            controls
+            controlsList="nodownload "
+            onContextMenu={(e) => e.preventDefault()}
+          />
+        </div>
         <div>
           <h1 className="text-4xl font-bold mb-4">{title}</h1>
           <p className="text-gray-300 mb-6">{shortDescription}</p>
@@ -44,16 +53,6 @@ export default function CourseHeader({
               </li>
             ))}
           </ul>
-        </div>
-
-        <div className="rounded-xl overflow-hidden shadow-lg">
-          <video
-            src={promoVideo}
-            className="w-full h-64"
-            controls
-            controlsList="nodownload "
-            onContextMenu={(e) => e.preventDefault()}
-          />
         </div>
       </div>
     </section>

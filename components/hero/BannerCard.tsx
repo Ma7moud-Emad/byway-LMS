@@ -14,7 +14,7 @@ export default function BannerCard({
 }: BannerProps) {
   return (
     <div className="p-4 h-[94vh] sm:h-[90vh] flex flex-col gap-8 sm:flex-row-reverse sm:items-center justify-center">
-      <div className="relative sm:w-1/2 h-[400px]">
+      <div className="relative sm:w-1/2 h-[300px] sm:h-[400px]">
         <Image
           priority={priority}
           src={image}

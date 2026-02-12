@@ -17,7 +17,7 @@ import { signSchema, userSchema } from "@/lib/schema";
 import image from "@/public/signup.svg";
 
 export default function Page() {
-  const [orderForm, setOrderForm] = useState(2);
+  const [orderForm, setOrderForm] = useState(1);
   const [userId, setUserId] = useState<string | null>(null);
 
   // use react hook form library form one
@@ -123,7 +123,7 @@ export default function Page() {
   return (
     <div className="max-sm:flex max-sm:justify-center max-sm:items-center sm:grid sm:grid-cols-2 h-[94vh] sm:h-[90vh]">
       <div className="my-auto px-4 max-sm:w-full py-4">
-        <h1 className="text-center text-2xl text-gray-700 font-semibold capitalize mb-6">
+        <h1 className="text-center text-2xl text-gray-900 font-semibold capitalize mb-6">
           Create Your Account
         </h1>
 

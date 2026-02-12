@@ -1,5 +1,6 @@
 "use client";
 
+import Button from "@/components/ui/Button";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ReactNode, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
@@ -15,7 +16,6 @@ export default function FilterItem({
   items: { value: string; label: ReactNode }[];
   type?: "checkbox" | "radio";
 }) {
-  // The filtering process relied on search params
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -24,21 +24,15 @@ export default function FilterItem({
   const [selectedValues, setSelectedValues] =
     useState<string[]>(selectedFromParams);
 
-  // filter setting:
-  // 1. open or close filter
-  // 2. more or less show filter options
   const [open, setOpen] = useState(true);
   const [visibleCount, setVisibleCount] = useState(4);
 
-  // funcution control search params by selected filters
   const toggleValue = (value: string) => {
     let newValues: string[];
 
-    // if radio input replace new value
     if (type === "radio") {
       newValues = [value];
     } else {
-      // if checkbox input add select filter on old filter
       newValues = selectedValues.includes(value)
         ? selectedValues.filter((v) => v !== value)
         : [...selectedValues, value];
@@ -56,7 +50,6 @@ export default function FilterItem({
     router.push(`?${params.toString()}`);
   };
 
-  // function if options in filter more than 4 hide when click in more button show next 4 option
   const handleShowMore = () => {
     if (visibleCount >= items.length) {
       setVisibleCount(4);
@@ -67,24 +60,18 @@ export default function FilterItem({
 
   return (
     <div className="mb-4 w-full">
-      {/* ===== Header ===== */}
       <div className="flex items-center justify-between mb-2">
         <h3 className="font-semibold capitalize">{title}</h3>
-        {/* button is responsible for hide or show options */}
-        <button
-          suppressHydrationWarning
-          onClick={() => setOpen((v) => !v)}
-          className="text-lg cursor-pointer"
-          aria-label="toggle filter"
+        <Button
+          classes="text-lg cursor-pointer"
+          clickedFun={() => setOpen((val) => !val)}
         >
           {open ? <LuChevronUp /> : <LuChevronDown />}
-        </button>
+        </Button>
       </div>
 
-      {/* ===== Body ===== */}
       {open && (
         <>
-          {/* options */}
           <ul className="space-y-2">
             {items.slice(0, visibleCount).map((item) => (
               <li key={item.value}>
@@ -102,24 +89,18 @@ export default function FilterItem({
             ))}
           </ul>
 
-          {/* ===== Footer ===== */}
           {items.length > 4 && (
-            // button show first 4 options when options more than for show more button is responsible for show next 4 option when arrive the end show less button is responsible for shoe firts 4 options
-            <button
-              suppressHydrationWarning
-              onClick={handleShowMore}
-              className="mt-2 text-sm font-semibold text-blue-600 flex items-center gap-1 cursor-pointer"
-            >
+            <Button classes="-ml-4 mt-2" clickedFun={handleShowMore}>
               {visibleCount >= items.length ? (
-                <>
+                <p className="text-sm font-semibold text-blue-600 flex items-center gap-1">
                   See less <LuChevronUp />
-                </>
+                </p>
               ) : (
-                <>
+                <p className="text-sm font-semibold text-blue-600 flex items-center gap-1">
                   See more <LuChevronDown />
-                </>
+                </p>
               )}
-            </button>
+            </Button>
           )}
         </>
       )}

@@ -3,12 +3,6 @@ import Image from "next/image";
 import logo from "../../public/logo.svg";
 import Link from "next/link";
 
-import { FaFacebook, FaXTwitter } from "react-icons/fa6";
-import { FcGoogle } from "react-icons/fc";
-import { FiGithub } from "react-icons/fi";
-
-import microsoft from "@/public/microsoft-icon.svg";
-
 export default function Footer() {
   return (
     <footer className="tracking-wide bg-gray-800 text-gray-300 px-8 sm:px-12 pt-12 pb-6">
@@ -28,144 +22,89 @@ export default function Footer() {
         </div>
 
         <div className="min-[1200px]:col-span-2 grid grid-cols-2 md:grid-cols-3 gap-8">
-          <div className="max-lg:min-w-[140px]">
-            <h4 className="text-gray-100 font-semibold text-lg relative capitalize">
-              get help
-            </h4>
+          <UL
+            heading="Programs"
+            lis={[
+              { label: "Art & Design", href: "/" },
+              { label: "Business", href: "/" },
+              { label: "IT & Software", href: "/" },
+              { label: "Programming", href: "/" },
+              { label: "Languages", href: "/" },
+            ]}
+          />
 
-            <ul className="mt-4 space-y-2">
-              <li>
-                <Link
-                  href="/contact"
-                  className="hover:text-gray-50 text-sm font-normal transition-colors"
-                >
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/articles"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Latest Articles
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="/faq"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  FAQ
-                </Link>
-              </li>
-            </ul>
-          </div>
+          <UL
+            heading="get help"
+            lis={[
+              { label: "Contact Us", href: "/contact" },
+              { label: "Latest Articles", href: "/articles" },
+              { label: "FAQ", href: "/faq" },
+            ]}
+          />
 
-          <div className="max-lg:min-w-[140px]">
-            <h4 className="text-gray-100 font-semibold text-lg relative capitalize">
-              Programs
-            </h4>
-            <ul className="space-y-2 mt-4">
-              <li>
-                <Link
-                  href="javascript:void(0)"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Art & Design
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="javascript:void(0)"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Business
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="javascript:void(0)"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  IT & Software
-                </Link>
-              </li>
-
-              <li>
-                <Link
-                  href="javascript:void(0)"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Languages
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="javascript:void(0)"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Programming
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          <div className="max-lg:min-w-[140px]">
-            <h4 className="text-gray-100 font-semibold text-lg relative capitalize">
-              Contact Us
-            </h4>
-
-            <ul className="space-y-2 mt-4">
-              <li>
-                <Link
-                  href="https://maps.app.goo.gl/3u9AXmAfnvSEuXTa6"
-                  target="_blank"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Address: 123 Main St, Los Angeles
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="tel:+(123) 456-7890"
-                  target="_blank"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Tel: +(123) 456-7890
-                </Link>
-              </li>
-              <li>
-                <Link
-                  href="mailto:bywayedu@webkul.in"
-                  target="_blank"
-                  className="hover:text-gray-100 text-sm font-normal"
-                >
-                  Mail: bywayedu@webkul.in
-                </Link>
-              </li>
-              <li className="mt-4">
-                <ul className="flex gap-2 items-center">
-                  <li className="bg-gray-100 hover:bg-gray-300 transition-colors p-2 rounded-full cursor-pointer">
-                    <FaFacebook className="text-2xl text-blue-600" />
-                  </li>
-                  <li className="bg-gray-100 hover:bg-gray-300 transition-colors p-2 rounded-full cursor-pointer">
-                    <FiGithub className="text-2xl text-black" />
-                  </li>
-                  <li className="bg-gray-100 hover:bg-gray-300 transition-colors p-2 rounded-full cursor-pointer">
-                    <FcGoogle className="text-2xl" />
-                  </li>
-                  <li className="bg-gray-100 hover:bg-gray-300 transition-colors p-2 rounded-full cursor-pointer">
-                    <Image src={microsoft} alt="microsoft-logo" width={24} />
-                  </li>
-                  <li className="bg-gray-100 hover:bg-gray-300 transition-colors p-2 rounded-full cursor-pointer">
-                    <FaXTwitter className="text-2xl text-black/80" />
-                  </li>
-                </ul>
-              </li>
-            </ul>
-          </div>
+          <UL
+            heading="Contact Us"
+            lis={[
+              {
+                label: "Address: 123 Main St, Los Angeles",
+                href: "https://maps.app.goo.gl/3u9AXmAfnvSEuXTa6",
+                target: "_blank",
+              },
+              {
+                label: "Tel: +(123) 456-7890",
+                href: "tel:+(123) 456-7890",
+                target: "_blank",
+              },
+              {
+                label: "Mail: bywayedu@webkul.in",
+                href: "mailto:bywayedu@webkul.in",
+                target: "_blank",
+              },
+            ]}
+            containerClasses="max-md:col-span-2"
+          />
         </div>
       </div>
     </footer>
+  );
+}
+
+function UL({
+  lis,
+  heading,
+  containerClasses,
+}: {
+  lis: {
+    href: string;
+    label: string;
+    target?: string;
+  }[];
+  heading: string;
+  containerClasses?: string;
+}) {
+  return (
+    <div className={`max-lg:min-w-[140px] ${containerClasses}`}>
+      <h4 className="text-gray-100 font-semibold text-lg relative capitalize">
+        {heading}
+      </h4>
+      <ul className="space-y-2 mt-4">
+        {lis.map((item, ind) => {
+          return (
+            <li
+              key={ind}
+              className=" relative w-fit pb-1 before:absolute before:bg-gray-100 before:h-px before:bottom-0 before:left-0 before:w-0 hover:before:w-full before:transition-all before:duration-200"
+            >
+              <Link
+                href={item.href}
+                target={item.target && item.target}
+                className="hover:text-gray-100 text-sm font-normal transition-colors duration-150"
+              >
+                {item.label}
+              </Link>
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 }

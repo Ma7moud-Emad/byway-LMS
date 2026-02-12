@@ -25,6 +25,7 @@ import {
   FaCheckCircle,
   FaLayerGroup,
   FaSignOutAlt,
+  FaShoppingCart,
 } from "react-icons/fa";
 import { IoSettingsSharp } from "react-icons/io5";
 import { MdSpaceDashboard } from "react-icons/md";
@@ -41,6 +42,7 @@ const studentNav: NavItem[] = [
     Icon: FaListAlt,
   },
   { label: "Wishlist", href: "wishlist", Icon: FaHeart },
+  { label: "Cart", href: "cart", Icon: FaShoppingCart },
   {
     label: "Certificates",
     href: "certificates",

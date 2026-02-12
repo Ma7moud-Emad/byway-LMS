@@ -1,6 +1,14 @@
+"use client";
+
 import { RatingStars } from "@/components/shared/Stars";
+import Button from "@/components/ui/Button";
+import Spinner from "@/components/ui/Spinner";
+import { supabase } from "@/lib/supabase/client";
 import Image from "next/image";
 import Link from "next/link";
+import { useParams, useRouter } from "next/navigation";
+import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function WishlistCard({
   poster,
@@ -21,10 +29,35 @@ export default function WishlistCard({
   id: string;
   isEnrolled: boolean;
 }) {
+  const router = useRouter();
+  const { id: user_id } = useParams();
+  const [isRemoved, setIsRemoved] = useState<boolean>(false);
+
+  async function deleteCourse() {
+    setIsRemoved(true);
+    const { error } = await supabase
+      .from("wishlist_items")
+      .delete()
+      .eq("user_id", user_id)
+      .eq("course_id", id);
+
+    if (error) {
+      toast.error("Failed to remove course");
+    } else {
+      toast.success("Removed course successfully");
+      router.refresh();
+    }
+
+    setIsRemoved(false);
+  }
+
   return (
     <div className="block bg-white shadow hover:shadow-lg transition">
       {/* Poster */}
-      <div className="relative h-60 w-full">
+      <div
+        className="relative h-60 w-full cursor-pointer"
+        onClick={() => router.push(`/courses/${id}`)}
+      >
         <Image
           src={poster}
           alt={title}
@@ -65,13 +98,12 @@ export default function WishlistCard({
           {price == 0 ? "Free" : `$${price}`}
         </p>
 
-        {/* button */}
-        <Link
-          href={`/courses/${id}`}
-          className="bg-blue-700 block text-gray-50 text-center font-semibold p-2 w-full cursor-pointer"
+        <Button
+          clickedFun={deleteCourse}
+          classes="bg-blue-700 block text-gray-50 text-center font-semibold p-2 w-full "
         >
-          {isEnrolled ? "Go to Course" : "Enroll Now"}
-        </Link>
+          {isRemoved ? <Spinner /> : "remove"}
+        </Button>
       </div>
     </div>
   );

@@ -53,32 +53,10 @@ export default function SignForm<T extends FieldValues>({
 
       <Button
         type="submit"
-        classes="bg-gray-900 text-gray-50 w-1/2 block ml-auto"
+        classes="bg-gray-900 text-gray-50 w-1/2 block max-md:mx-auto md:mr-auto"
       >
         {isSubmitting ? <Spinner /> : <>{btnName}</>}
       </Button>
     </form>
   );
 }
-
-//  {/* Oauth app */}
-//       <hr className="w-4/5 mx-auto my-6 h-0.5 bg-gray-400 text-gray-400 overflow-visible relative after:content-['or'] after:absolute after:top-1/2 after:left-1/2 after:w-10 after:h-5 after:bg-white after:z-10 after:text-center after:uppercase after:-translate-1/2 after:leading-4" />
-//       <div className="flex gap-4 justify-center">
-//         <Button type="button" classes="border border-gray-300 text-blue-700">
-//           <p className="flex gap-2 justify-center ">
-//             <FaFacebook className="text-2xl" />
-//             Facebook
-//           </p>
-//         </Button>
-
-//         <Button
-//           type="button"
-//           classes="border border-gray-300 text-red-500"
-//           clickedFun={handleGoogleSignUp}
-//         >
-//           <p className="flex gap-2 justify-center">
-//             <FcGoogle className="text-2xl" />
-//             Google
-//           </p>
-//         </Button>
-//       </div>

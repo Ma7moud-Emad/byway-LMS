@@ -16,7 +16,7 @@ export default function UserForm<T extends FieldValues>({
       <Input<T>
         name={"full_name" as Path<T>}
         label="Full Name"
-        placeholder="mahmoud emad alfaramawy"
+        placeholder="mahmoud emad"
         type="text"
         register={register}
         error={errors.full_name as FieldError | undefined}
@@ -26,7 +26,7 @@ export default function UserForm<T extends FieldValues>({
       <Input<T>
         name={"user_name" as Path<T>}
         label="User Name"
-        placeholder="mahmoud emad"
+        placeholder="mahmoud-emad"
         type="text"
         register={register}
         error={errors.user_name as FieldError | undefined}
@@ -91,7 +91,7 @@ export default function UserForm<T extends FieldValues>({
       </div>
       <Button
         type="submit"
-        classes="bg-gray-900 text-gray-50 w-1/2 block ml-auto"
+        classes="bg-gray-900 text-gray-50 w-1/2 block max-md:mx-auto md:mr-auto"
       >
         {isSubmitting ? <Spinner /> : <>{btnName}</>}
       </Button>

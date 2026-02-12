@@ -144,6 +144,8 @@ export default async function Page({ params }: { params: { id: string } }) {
             price={price}
             discountPrice={discount_price}
             role={profileUserData ? profileUserData.role : null}
+            student_id={userData?.user?.id || null}
+            course_id={course.id}
           />
         )}
       </div>

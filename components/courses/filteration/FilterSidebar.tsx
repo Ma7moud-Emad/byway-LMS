@@ -74,7 +74,6 @@ const filters: Filter[] = [
 export default function FilterSidebar() {
   const [filtertion, setFiltertion] = useState(filters);
 
-  // get available programs
   useEffect(() => {
     const getPrograms = async () => {
       const { data, error } = await supabase

@@ -50,7 +50,7 @@ export default function Page() {
         />
       </div>
       <div className="my-auto px-4 max-sm:w-full">
-        <h1 className="text-center text-2xl text-gray-700 font-semibold capitalize mb-6">
+        <h1 className="text-center text-2xl text-gray-900 font-semibold capitalize mb-6">
           Sign in to your account
         </h1>
 

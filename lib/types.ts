@@ -173,6 +173,8 @@ export type CourseProps = {
   price: number;
   discountPrice: number;
   role: string | null;
+  course_id: string;
+  student_id: string | null;
 };
 export type ShortLesson = {
   title: string;
