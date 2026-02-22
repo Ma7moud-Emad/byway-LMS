@@ -1,20 +1,26 @@
+import Button from "@/components/ui/Button";
+import Link from "next/link";
+
 export default function NotFound({
+  heading,
   msg,
-  msgColor,
-  msgSize,
+  href,
+  btnText,
 }: {
+  heading: string;
   msg: string;
-  msgColor?: string;
-  msgSize?: string;
+  href: string;
+  btnText: string;
 }) {
   return (
-    <div className="text-center text-gray-900 min-h-[80vh] flex flex-col gap-2 justify-center items-center">
-      <p
-        className="text-xl"
-        style={{ fontSize: `${msgSize}px`, color: `${msgColor}` }}
-      >
-        {msg}
-      </p>
+    <div className="text-center mt-50">
+      <h3 className=" capitalize font-semibold text-xl text-gray-900">
+        {heading}
+      </h3>
+      <p className=" text-gray-700 mb-4">{msg}</p>
+      <Button>
+        <Link href={href}>{btnText}</Link>
+      </Button>
     </div>
   );
 }

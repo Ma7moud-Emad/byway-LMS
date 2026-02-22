@@ -92,7 +92,7 @@ function UL({
           return (
             <li
               key={ind}
-              className=" relative w-fit pb-1 before:absolute before:bg-gray-100 before:h-px before:bottom-0 before:left-0 before:w-0 hover:before:w-full before:transition-all before:duration-200"
+              className="relative w-fit pb-1 before:absolute before:bg-gray-100 before:h-px before:bottom-0 before:left-0 before:w-0 hover:before:w-full before:transition-all before:duration-200"
             >
               <Link
                 href={item.href}

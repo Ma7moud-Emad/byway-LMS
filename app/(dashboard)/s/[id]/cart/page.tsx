@@ -1,12 +1,21 @@
 "use server";
 
 import CartTable from "@/components/dashboard/student/CartTable";
-import Button from "@/components/ui/Button";
+import NotFound from "@/components/dashboard/student/NotFound";
 import { supabase } from "@/lib/supabase/client";
-import Image from "next/image";
-import Link from "next/link";
-import toast from "react-hot-toast";
-import { MdDelete } from "react-icons/md";
+
+type CartItem = {
+  id: string;
+  user_id: string;
+  course_id: string;
+  added_at: string;
+  courses: {
+    title: string;
+    poster: string;
+    price: number;
+    discount_price: number;
+  };
+};
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -15,18 +24,7 @@ export default async function page({ params }: { params: { id: string } }) {
     .from("cart_items")
     .select("*,courses(title,poster,price,discount_price)")
     .eq("user_id", id)) as {
-    data: {
-      id: string;
-      user_id: string;
-      course_id: string;
-      added_at: string;
-      courses: {
-        title: string;
-        poster: string;
-        price: number;
-        discount_price: number;
-      };
-    }[];
+    data: CartItem[];
     error: Error | null;
   };
 
@@ -40,17 +38,12 @@ export default async function page({ params }: { params: { id: string } }) {
       {data && data.length > 0 ? (
         <CartTable data={data} />
       ) : (
-        <div className="text-center mt-20">
-          <h3 className=" capitalize font-semibold text-xl text-gray-900">
-            No courses in your cart
-          </h3>
-          <p className=" text-gray-700 mb-4">
-            Browse courses and add the ones you like to your cart
-          </p>
-          <Button>
-            <Link href="/courses">View courses</Link>
-          </Button>
-        </div>
+        <NotFound
+          heading="No courses in your cart"
+          msg="Browse courses and add the ones you like to your cart"
+          href="/courses"
+          btnText="View courses"
+        />
       )}
     </div>
   );

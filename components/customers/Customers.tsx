@@ -2,18 +2,15 @@
 
 import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import CustomerCard from "./CustomerCard";
-import { useEffect, useRef, useState } from "react";
-import { supabase } from "@/lib/supabase/client";
+import { useRef } from "react";
 
-type Review = {
+export type Review = {
   id: string;
   comment: string;
   profiles: { avatar_url: string; full_name: string };
 };
-export default function Customers() {
+export default function Customers({ reviews }: { reviews: Review[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
-
-  const [reviews, setReviews] = useState<Review[] | null>(null);
 
   const scrollLeft = () => {
     if (containerRef.current) {
@@ -29,19 +26,19 @@ export default function Customers() {
     }
   };
 
-  // get reviews
-  useEffect(() => {
-    const getReviews = async () => {
-      const { data } = (await supabase.from("reviews").select(`
-        id,
-        comment,
-        profiles(avatar_url,full_name)`)) as {
-        data: Review[];
-      };
-      setReviews(data);
-    };
-    getReviews();
-  }, []);
+  // // get reviews
+  // useEffect(() => {
+  //   const getReviews = async () => {
+  //     const { data } = (await supabase.from("reviews").select(`
+  //       id,
+  //       comment,
+  //       profiles(avatar_url,full_name)`)) as {
+  //       data: Review[];
+  //     };
+  //     setReviews(data);
+  //   };
+  //   getReviews();
+  // }, []);
 
   return (
     <div className="px-4 py-8 bg-[#F8FAFC]">

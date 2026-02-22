@@ -47,18 +47,6 @@ export default function CartTable({ data }: { data: Course[] }) {
 
       if (enrollError) throw enrollError;
 
-      //  delete cart_items
-      const { error: deleteError } = await supabase
-        .from("cart_items")
-        .delete()
-        .in(
-          "course_id",
-          courses.map((course) => course.course_id),
-        )
-        .eq("user_id", courses[0].user_id);
-
-      if (deleteError) throw deleteError;
-
       toast.success("Enrolled successfully");
       router.refresh();
     } catch (error) {

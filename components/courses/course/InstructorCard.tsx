@@ -13,14 +13,15 @@ export default function InstructorCard({
     <section className="text-gray-900">
       <h2 className="text-2xl font-semibold mb-2">Instructor</h2>
       <div className="flex items-start gap-4">
-        <Image
-          src={avatar}
-          alt={name}
-          width={80}
-          height={80}
-          className="rounded-sm"
-          unoptimized
-        />
+        <div className="relative w-20 h-20 rounded-sm overflow-hidden">
+          <Image
+            src={avatar}
+            alt={name}
+            fill
+            sizes="100%"
+            className="object-cover"
+          />
+        </div>
         <div>
           <h3 className="font-semibold capitalize">{name}</h3>
           <p className="text-sm text-gray-500">{headline}</p>

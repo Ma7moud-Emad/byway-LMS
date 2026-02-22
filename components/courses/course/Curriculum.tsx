@@ -3,7 +3,7 @@
 import { useState } from "react";
 import LessonPlayer from "./LessonPlayer";
 import { Lesson, Module } from "@/lib/types";
-import { FaRegSquare } from "react-icons/fa";
+import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
 
 export default function Curriculum({
   modules,
@@ -15,6 +15,7 @@ export default function Curriculum({
   isFree: boolean;
 }) {
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
+  console.log(activeLesson);
 
   return (
     <>
@@ -59,7 +60,11 @@ export default function Curriculum({
                     `}
                         >
                           <span className="flex items-center gap-2">
-                            <FaRegSquare className="text-xl" />
+                            {lesson.user_progress?.[0]?.is_completed ? (
+                              <FaCheckSquare className="text-green-500" />
+                            ) : (
+                              <FaRegSquare className="text-xl" />
+                            )}
                             {lesson.title}
                           </span>
 

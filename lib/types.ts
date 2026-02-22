@@ -150,6 +150,11 @@ export type Lesson = {
   video_url?: string;
   description: string;
   order_number: number;
+  user_progress?:
+    | {
+        is_completed: boolean;
+      }[]
+    | [];
 };
 
 export type Module = {

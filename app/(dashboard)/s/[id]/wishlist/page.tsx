@@ -5,8 +5,7 @@ import WishlistCard from "@/components/dashboard/student/WishlistCard";
 
 import { FaHeart } from "react-icons/fa";
 import { MdOutlineCheckCircle, MdOutlineLockOpen } from "react-icons/md";
-import Button from "@/components/ui/Button";
-import Link from "next/link";
+import NotFound from "@/components/dashboard/student/NotFound";
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -36,7 +35,7 @@ export default async function page({ params }: { params: { id: string } }) {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold text-gray-900">Wishlist Courses</h1>
+      <h1 className="text-2xl font-bold text-gray-900">Wishlist</h1>
       <div className="my-4 grid gap-4 grid-cols-1 sm:grid-cols-2 lg:grid-cols-3">
         <State
           icon={FaHeart}
@@ -89,17 +88,12 @@ export default async function page({ params }: { params: { id: string } }) {
           })}
         </div>
       ) : (
-        <div className="text-center mt-20">
-          <h3 className=" capitalize font-semibold text-xl text-gray-900">
-            No courses in your wishlist
-          </h3>
-          <p className=" text-gray-700 mb-4">
-            Browse courses and add the ones you like to your wishlist
-          </p>
-          <Button>
-            <Link href="/courses">View courses</Link>
-          </Button>
-        </div>
+        <NotFound
+          heading="No courses in your wishlist"
+          msg="Browse courses and add the ones you like to your wishlist"
+          href="/courses"
+          btnText="View courses"
+        />
       )}
     </div>
   );

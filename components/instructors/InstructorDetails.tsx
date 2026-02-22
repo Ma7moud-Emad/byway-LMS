@@ -8,35 +8,109 @@ import { FaPhoneAlt, FaStar, FaUser } from "react-icons/fa";
 import { PiStudentBold } from "react-icons/pi";
 import { MdEmail } from "react-icons/md";
 import { IoIosCheckmarkCircle } from "react-icons/io";
-import {
-  instructorDetails,
-  ProfileDetails,
-  social_icons_map,
-} from "@/lib/types";
+import { social_icons_map } from "@/lib/types";
 import CourseCard from "../courses/CourseCard";
 import HomeContainer from "../shared/HomeContainer";
 import { AiFillCaretRight } from "react-icons/ai";
+import Customers, { Review } from "../customers/Customers";
+
+type Data = {
+  id: string;
+  headline: string;
+  expertise: string[];
+  social_links: {
+    github: string;
+    twitter: string;
+    youtube: string;
+    facebook: string;
+    linkedin: string;
+  };
+  total_students: number;
+  total_courses: number;
+  avg_rating: number;
+  is_verified: boolean;
+  created_at: string;
+  total_reviews: number;
+  profiles: {
+    id: string;
+    bio: string;
+    role: "instructor";
+    email: string;
+    phone: string;
+    username: string;
+    full_name: string;
+    avatar_url: string;
+    created_at: string;
+    updated_at: string;
+  };
+  courses: {
+    id: string;
+    slug: string;
+    tags: string[];
+    level: string;
+    price: number;
+    title: string;
+    poster: string;
+    status: string;
+    is_free: boolean;
+    languages: string[];
+    avg_rating: number;
+    created_at: string;
+    updated_at: string;
+    category_id: string;
+    description: string;
+    is_featured: boolean;
+    promo_video: string;
+    published_at: string | null;
+    requirements: string[];
+    instructor_id: string;
+    total_lessons: number;
+    total_reviews: number;
+    discount_price: number;
+    total_students: number;
+    learning_outcomes: string[];
+    short_description: string;
+    total_time_minutes: number;
+  }[];
+};
 
 export default async function InstructorDetails({ id }: { id: string }) {
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*")
-    .eq("id", id)
-    .single();
-
-  const { avatar_url, full_name, phone, bio, username, email }: ProfileDetails =
-    profile;
-
-  const { data: instructor } = await supabase
+  const { data } = (await supabase
     .from("instructors")
-    .select("*")
+    .select(
+      `
+    *,
+    profiles(*),
+    courses(*)
+  `,
+    )
     .eq("id", id)
-    .single();
+    .single()) as {
+    data: Data;
+  };
 
-  const { data: courses } = await supabase
-    .from("courses")
-    .select("*")
-    .eq("instructor_id", id);
+  const { data: reviews } = await supabase
+    .from("reviews")
+    .select(
+      `
+    id,
+    comment,
+    profiles(avatar_url, full_name),
+    courses!inner(instructor_id)
+  `,
+    )
+    .eq("courses.instructor_id", id);
+
+  const fltReviews: Review[] =
+    reviews?.map((item) => {
+      return {
+        id: item.id,
+        comment: item.comment,
+        profiles: Array.isArray(item.profiles)
+          ? item.profiles[0]
+          : item.profiles,
+      };
+    }) ?? [];
 
   const {
     avg_rating,
@@ -45,7 +119,9 @@ export default async function InstructorDetails({ id }: { id: string }) {
     headline,
     social_links,
     total_students,
-  }: instructorDetails = instructor;
+    profiles: { avatar_url, full_name, phone, bio, username, email },
+    courses,
+  } = data;
 
   return (
     <section>
@@ -58,7 +134,6 @@ export default async function InstructorDetails({ id }: { id: string }) {
               fill
               sizes="100%"
               className="object-cover object-top"
-              unoptimized
             />
           </div>
           <div>
@@ -165,6 +240,7 @@ export default async function InstructorDetails({ id }: { id: string }) {
           </p>
         )}
       </HomeContainer>
+      <Customers reviews={fltReviews} />
     </section>
   );
 }

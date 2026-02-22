@@ -1,8 +1,14 @@
+import NotFound from "@/components/dashboard/student/NotFound";
 import Progress from "@/components/dashboard/student/Progress";
 import Stats from "@/components/dashboard/student/Stats";
-import Button from "@/components/ui/Button";
 import { supabase } from "@/lib/supabase/client";
 import Link from "next/link";
+
+type EnrollmentType = {
+  progress_percentage: number;
+  status: string;
+  courses: { id: string; title: string; poster: string };
+};
 
 export default async function page({ params }: { params: { id: string } }) {
   const { id: userId } = await params;
@@ -22,11 +28,7 @@ export default async function page({ params }: { params: { id: string } }) {
     )
     .eq("student_id", userId)
     .order("last_accessed_at", { ascending: false })) as {
-    data: Array<{
-      progress_percentage: number;
-      status: string;
-      courses: { id: string; title: string; poster: string };
-    }> | null;
+    data: EnrollmentType[] | null;
     error: Error | null;
   };
 
@@ -63,9 +65,11 @@ export default async function page({ params }: { params: { id: string } }) {
       <hr className="mt-8 mb-4 text-gray-700 text-2xl border" />
 
       {/* last access course */}
-      <h1 className="text-2xl font-bold text-gray-900">Continue Learning</h1>
       {enrollments && enrollments.length > 0 ? (
         <>
+          <h1 className="text-2xl font-bold text-gray-900">
+            Continue Learning
+          </h1>
           <div
             className="flex justify-center items-center rounded-xl bg-white shadow hover:shadow-lg mt-4 p-4 transition w-full h-52 md:h-80 bg-cover bg-center bg-no-repeat relative after:absolute after:top-0 after:left-0 after:z-0 after:w-full after:h-full after:bg-gray-900/50 after:rounded-xl"
             style={{
@@ -90,17 +94,12 @@ export default async function page({ params }: { params: { id: string } }) {
           </div>
         </>
       ) : (
-        <div className="text-center mt-20">
-          <h3 className=" capitalize font-semibold text-xl text-gray-900">
-            No enrolled courses found
-          </h3>
-          <p className=" text-gray-700 mb-4">
-            Browse available courses and enroll to begin your learning journey.
-          </p>
-          <Button>
-            <Link href="/courses">Browse courses</Link>
-          </Button>
-        </div>
+        <NotFound
+          heading="No enrolled courses found"
+          msg="Browse available courses and enroll to begin your learning journey"
+          href="/courses"
+          btnText="Browse courses"
+        />
       )}
     </div>
   );

@@ -12,9 +12,10 @@ export default function LessonPlayer({
   onClose: () => void;
 }) {
   if (!lesson) return null;
+  console.log(lesson);
 
   return (
-    <div className="">
+    <div>
       <div className="flex justify-between items-start p-4 bg-white">
         <p className=" text-gray-700">{lesson.description}</p>
         <button

@@ -43,7 +43,6 @@ export default async function InstructorCard({
           fill
           sizes="100%"
           className="object-top object-cover"
-          unoptimized
         />
       </figure>
       <div>

@@ -8,6 +8,7 @@ import Outcomes_requirements_tags from "./../../../components/courses/course/Out
 import { supabaseServer } from "@/lib/supabase/server";
 
 import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
+import Customers, { Review } from "@/components/customers/Customers";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
@@ -32,29 +33,15 @@ export default async function Page({ params }: { params: { id: string } }) {
     .single();
 
   // course info
-  const { data: course } = await supabase
+  const { data } = await supabase
     .from("courses")
-    .select(`*`)
+    .select(
+      `*,
+      instructors(*,profiles(*)),
+      modules(*,lessons(*,user_progress(is_completed)))`,
+    )
     .eq("id", id)
     .single();
-
-  // instructor info
-  const { data: instructor } = await supabase
-    .from("instructors")
-    .select(`*,profiles(*)`)
-    .eq("id", course.instructor_id)
-    .single();
-
-  const { data: modules } = await supabase
-    .from("modules")
-    .select(
-      `
-    *,
-    lessons (*)
-  `,
-    )
-    .eq("course_id", course.id)
-    .order("order_number", { ascending: true });
 
   const {
     title,
@@ -72,14 +59,24 @@ export default async function Page({ params }: { params: { id: string } }) {
     tags,
     is_free,
     instructor_id,
-  } = course;
+    instructors: {
+      headline,
+      avg_rating,
+      total_students,
+      profiles: { full_name, username, avatar_url },
+    },
+    modules,
+  } = data;
 
-  const {
-    headline,
-    avg_rating,
-    total_students,
-    profiles: { full_name, username, avatar_url },
-  } = instructor;
+  const { data: reviews } = (await supabase
+    .from("reviews")
+    .select(
+      `
+          id,
+          comment,
+          profiles(avatar_url,full_name)`,
+    )
+    .eq("course_id", id)) as unknown as { data: Review[] };
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -111,16 +108,16 @@ export default async function Page({ params }: { params: { id: string } }) {
             iconColor="text-gray-900"
           />
           <Curriculum
-            modules={modules ?? []}
+            modules={modules}
             isEnrolled={
-              enrolledCourses || userData?.user?.id === course.instructor_id
+              enrolledCourses || userData?.user?.id === instructor_id
                 ? true
                 : false
             }
             isFree={is_free}
           />
 
-          {userData?.user?.id !== course.instructor_id ? (
+          {userData?.user?.id !== instructor_id ? (
             <InstructorCard
               id={instructor_id}
               name={full_name}
@@ -145,10 +142,12 @@ export default async function Page({ params }: { params: { id: string } }) {
             discountPrice={discount_price}
             role={profileUserData ? profileUserData.role : null}
             student_id={userData?.user?.id || null}
-            course_id={course.id}
+            course_id={id}
           />
         )}
       </div>
+
+      <Customers reviews={reviews} />
     </div>
   );
 }

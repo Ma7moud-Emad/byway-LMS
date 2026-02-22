@@ -3,6 +3,22 @@ import NotFound from "@/components/dashboard/student/NotFound";
 import { formatShortDate } from "@/lib/helper";
 import { supabase } from "@/lib/supabase/client";
 
+type CertificateType = {
+  id: string;
+  issued_at: string;
+  profiles: {
+    full_name: string;
+  };
+  courses: {
+    title: string;
+    instructors: {
+      profiles: {
+        full_name: string;
+      };
+    };
+  };
+};
+
 export default async function page({ params }: { params: { id: string } }) {
   const { id } = await params;
 
@@ -12,24 +28,10 @@ export default async function page({ params }: { params: { id: string } }) {
       `id,
       issued_at,
       profiles(full_name),
-      courses(title,instructors!courses_instructor_id_fkey (profiles(full_name)))`,
+      courses(title,instructors(profiles(full_name)))`,
     )
     .eq("user_id", id)) as {
-    data: Array<{
-      id: string;
-      issued_at: string;
-      profiles: {
-        full_name: string;
-      };
-      courses: {
-        title: string;
-        instructors: {
-          profiles: {
-            full_name: string;
-          };
-        };
-      };
-    }> | null;
+    data: CertificateType[] | null;
     error: Error | null;
   };
 
@@ -67,7 +69,12 @@ export default async function page({ params }: { params: { id: string } }) {
             );
           })
         ) : (
-          <NotFound msg="No certificates found" />
+          <NotFound
+            heading="No certificates available"
+            msg="You haven't earned any certificates yet. Complete a course to receive one."
+            href="/courses"
+            btnText="View courses"
+          />
         )}
       </div>
     </div>
