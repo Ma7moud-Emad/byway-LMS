@@ -114,7 +114,8 @@ export default function Page() {
           })}
         </div>
       ) : (
-        <NotFound msg="No courses were found" />
+        // <NotFound msg="No courses were found" />
+        <p className="text-center text-gray-500">No courses were found</p>
       )}
     </div>
   );
