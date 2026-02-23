@@ -7,8 +7,10 @@ import { useRef } from "react";
 export type Review = {
   id: string;
   comment: string;
+  rating: number;
   profiles: { avatar_url: string; full_name: string };
 };
+
 export default function Customers({ reviews }: { reviews: Review[] }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
 
@@ -25,20 +27,6 @@ export default function Customers({ reviews }: { reviews: Review[] }) {
       containerRef.current.scrollBy({ left: width, behavior: "smooth" });
     }
   };
-
-  // // get reviews
-  // useEffect(() => {
-  //   const getReviews = async () => {
-  //     const { data } = (await supabase.from("reviews").select(`
-  //       id,
-  //       comment,
-  //       profiles(avatar_url,full_name)`)) as {
-  //       data: Review[];
-  //     };
-  //     setReviews(data);
-  //   };
-  //   getReviews();
-  // }, []);
 
   return (
     <div className="px-4 py-8 bg-[#F8FAFC]">
@@ -78,6 +66,7 @@ export default function Customers({ reviews }: { reviews: Review[] }) {
                 className="w-full sm:w-4/5 md:w-3/5 lg:w-2/5 shrink-0"
               >
                 <CustomerCard
+                  rating={review.rating}
                   comment={review.comment}
                   userName={review.profiles.full_name}
                   avatar_url={review.profiles.avatar_url}

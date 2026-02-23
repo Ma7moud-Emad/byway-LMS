@@ -2,6 +2,7 @@
 
 import { RatingStars } from "@/components/shared/Stars";
 import Button from "@/components/ui/Button";
+import Spinner from "@/components/ui/Spinner";
 import { supabase } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -19,6 +20,7 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
   const router = useRouter();
 
   const [activeEdit, setactiveEdit] = useState<Review | null>(null);
+  const [isUPdating, setIsUPdating] = useState<boolean>(false);
 
   async function remove(id: string) {
     const { error } = await supabase.from("reviews").delete().eq("id", id);
@@ -32,6 +34,7 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
   }
 
   async function update(review: Review) {
+    setIsUPdating(true);
     const { error } = await supabase
       .from("reviews")
       .update({ comment: review.comment, rating: review.rating })
@@ -45,6 +48,7 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
       router.refresh();
       setactiveEdit(null);
     }
+    setIsUPdating(false);
   }
   return (
     <div className="relative">
@@ -144,8 +148,8 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
               />
             </div>
 
-            <Button padding="w-full p-2" type="submit">
-              update
+            <Button padding="w-full p-2" type="submit" disabled={isUPdating}>
+              {isUPdating ? <Spinner /> : "update"}
             </Button>
           </form>
         </div>

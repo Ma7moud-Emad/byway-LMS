@@ -10,6 +10,7 @@ export default async function Page() {
   const { data } = (await supabase.from("reviews").select(`
         id,
         comment,
+        rating,
         profiles(avatar_url,full_name)`)) as {
     data: Review[];
   };

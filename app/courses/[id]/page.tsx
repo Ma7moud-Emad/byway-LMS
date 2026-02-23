@@ -74,6 +74,7 @@ export default async function Page({ params }: { params: { id: string } }) {
       `
           id,
           comment,
+          rating,
           profiles(avatar_url,full_name)`,
     )
     .eq("course_id", id)) as unknown as { data: Review[] };

@@ -73,7 +73,7 @@ const instructorNav: NavItem[] = [
     href: "create",
     Icon: FaPlusCircle,
   },
-
+  { label: "Reveiws", href: "reviews", Icon: FaCommentDots },
   {
     label: "settings",
     href: "settings",
