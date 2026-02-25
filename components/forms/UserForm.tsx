@@ -56,6 +56,7 @@ export default function UserForm<T extends FieldValues>({
         name={"avatar" as Path<T>}
         label="avatar"
         type="file"
+        accept="image/*"
         register={register}
         error={errors.avatar as FieldError | undefined}
         autocomplete="avatar"

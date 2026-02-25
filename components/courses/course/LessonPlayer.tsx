@@ -7,12 +7,13 @@ import { FaXmark } from "react-icons/fa6";
 export default function LessonPlayer({
   lesson,
   onClose,
+  endFun,
 }: {
   lesson: ShortLesson | null;
   onClose: () => void;
+  endFun: () => void;
 }) {
   if (!lesson) return null;
-  console.log(lesson);
 
   return (
     <div>
@@ -33,6 +34,7 @@ export default function LessonPlayer({
           controls
           controlsList="nodownload "
           onContextMenu={(e) => e.preventDefault()}
+          onEnded={endFun}
         />
       </div>
     </div>

@@ -4,14 +4,16 @@ import CourseSidebar from "@/components/courses/course/CourseSidebar";
 import Curriculum from "@/components/courses/course/Curriculum";
 import InstructorCard from "@/components/courses/course/InstructorCard";
 import Outcomes_requirements_tags from "./../../../components/courses/course/Outcomes_requirements_tags";
+import Customers, { Review } from "@/components/customers/Customers";
+import CommentForm from "@/components/forms/CommentForm";
 
 import { supabaseServer } from "@/lib/supabase/server";
 
 import { FiAlertCircle, FiCheckCircle } from "react-icons/fi";
-import Customers, { Review } from "@/components/customers/Customers";
 
 export default async function Page({ params }: { params: { id: string } }) {
   const { id } = await params;
+
   const supabase = await supabaseServer();
 
   // get user session
@@ -72,12 +74,19 @@ export default async function Page({ params }: { params: { id: string } }) {
     .from("reviews")
     .select(
       `
-          id,
-          comment,
-          rating,
-          profiles(avatar_url,full_name)`,
+      id,
+      comment,
+      rating,
+      profiles(avatar_url,full_name)`,
     )
     .eq("course_id", id)) as unknown as { data: Review[] };
+
+  const { data: currentCourse } = await supabase
+    .from("reviews")
+    .select("*")
+    .eq("user_id", userData?.user?.id)
+    .eq("enrollment_id", enrolledCourses?.id)
+    .single();
 
   return (
     <div className="bg-gray-50 min-h-screen">
@@ -109,9 +118,11 @@ export default async function Page({ params }: { params: { id: string } }) {
             iconColor="text-gray-900"
           />
           <Curriculum
+            user_id={userData?.user?.id || ""}
+            enrollment_id={enrolledCourses?.id || ""}
             modules={modules}
             isEnrolled={
-              enrolledCourses || userData?.user?.id === instructor_id
+              enrolledCourses || userData.user?.id === instructor_id
                 ? true
                 : false
             }
@@ -149,6 +160,14 @@ export default async function Page({ params }: { params: { id: string } }) {
       </div>
 
       <Customers reviews={reviews} />
+
+      {enrolledCourses && userData && currentCourse == null && (
+        <CommentForm
+          user_id={userData.user?.id || ""}
+          course_id={id}
+          enrollment_id={enrolledCourses.id}
+        />
+      )}
     </div>
   );
 }

@@ -16,9 +16,9 @@ export default function CustomerCard({
   avatar_url: string;
 }) {
   return (
-    <div className="rounded-2xl shadow-blue-light p-4 border-2 border-gray-100 space-y-2 bg-white">
+    <div className="rounded-2xl shadow-blue-light p-4 border-2 border-gray-100 space-y-2 bg-white h-full flex flex-col">
       <FaQuoteLeft className="text-2xl text-blue-500 mb-2" />
-      <h2 className="font-semibold text-gray-700 ml-4">{comment}</h2>
+      <h2 className="font-semibold text-gray-700 ml-4 flex-1">{comment}</h2>
       <div className="flex gap-2 mt-4 ml-4">
         <div className="w-15 h-15 relative overflow-hidden rounded-lg">
           <Image

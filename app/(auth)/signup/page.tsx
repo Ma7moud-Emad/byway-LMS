@@ -15,37 +15,61 @@ import { SignData, UserData } from "@/lib/types";
 import { signSchema, userSchema } from "@/lib/schema";
 
 import image from "@/public/signup.svg";
+import { uploadFile } from "@/lib/helper";
+import { useRouter } from "next/navigation";
+import InstructorFormUp from "@/components/forms/InstructorFormUp";
+import z from "zod";
 
+async function isEmailExists(email: string): Promise<boolean> {
+  const { data, error } = await supabase
+    .from("profiles")
+    .select("id")
+    .eq("email", email);
+
+  if (error) {
+    toast.error(`Supabase error: ${error.message}`);
+    return false;
+  }
+
+  return data && data.length > 0 ? true : false;
+}
+
+type InstructorData = {
+  headline: string;
+  expertise: string;
+  github?: string;
+  linkedin?: string;
+  twitter?: string;
+  youtube?: string;
+  facebook?: string;
+};
 export default function Page() {
   const [orderForm, setOrderForm] = useState(1);
   const [userId, setUserId] = useState<string | null>(null);
+  const router = useRouter();
 
-  // use react hook form library form one
   const signForm = useForm<SignData>({
     resolver: zodResolver(signSchema),
   });
 
-  // use react hook form library form one
   const userForm = useForm<UserData>({
     resolver: zodResolver(userSchema),
   });
 
-  // check if email is already exists
-  async function isEmailExists(email: string): Promise<boolean> {
-    const { data, error } = await supabase
-      .from("profiles")
-      .select("id")
-      .eq("email", email);
+  const instructorForm = useForm<InstructorData>({
+    resolver: zodResolver(
+      z.object({
+        headline: z.string().min(1, "Headline is required"),
+        expertise: z.string().min(1, "Expertise is required"),
+        github: z.string().url("Invalid GitHub URL").optional(),
+        linkedin: z.string().url("Invalid LinkedIn URL").optional(),
+        twitter: z.string().url("Invalid Twitter URL").optional(),
+        youtube: z.string().url("Invalid YouTube URL").optional(),
+        facebook: z.string().url("Invalid Facebook URL").optional(),
+      }),
+    ),
+  });
 
-    if (error) {
-      toast.error(`Supabase error: ${error.message}`);
-      return false;
-    }
-
-    return data && data.length > 0 ? true : false;
-  }
-
-  // auth using email & password
   const signOnSubmit: SubmitHandler<SignData> = async (formData) => {
     const { email, password } = formData;
 
@@ -54,72 +78,79 @@ export default function Page() {
     if (isEmailExist) {
       toast.error(`Email already exists.`);
     } else {
-      // sign up with supabase
       const { error, data } = await supabase.auth.signUp({
         email,
         password,
       });
 
-      // handel error by toast library
       if (error) {
         toast.error(`${error?.message}, Try again`);
       } else {
         toast.success("Congratulations!, Complete next step");
-
-        // complete sign up next step fill profile info
         setOrderForm(2);
-        if (data?.user?.id) {
+        if (data.user) {
           setUserId(data.user.id);
         }
       }
     }
   };
 
-  // complete profile info
   const userOnSubmit: SubmitHandler<UserData> = async (formData) => {
     const { avatar, user_name, full_name, role, bio, phone } = formData;
 
-    const fileName = `${userId}/avatar.${avatar[0].name.split(".")[1]}`;
-
-    // upload avatar
-    const { error } = await supabase.storage
-      .from("avatars")
-      .upload(fileName, avatar[0], {
-        upsert: false,
-      });
-
+    const { error } = await supabase
+      .from("profiles")
+      .update({
+        username: user_name,
+        full_name: full_name,
+        avatar_url: await uploadFile(avatar[0], "avatars", `${userId}/avatar`),
+        bio: bio,
+        role: role,
+        phone: phone,
+      })
+      .eq("id", userId);
     if (error) {
       toast.error(`Upload error: ${error?.message}`);
       return;
-    } else {
-      // update profile info
-      const { error } = await supabase
-        .from("profiles")
-        .update({
-          username: user_name,
-          full_name: full_name,
-          avatar_url: `https://vvmwizqlurbngruwobya.supabase.co/storage/v1/object/public/avatars/${userId}/avatar.jpg`,
-          bio: bio,
-          role: role,
-          phone: phone,
-        })
-        .eq("id", userId)
-        .select();
-      if (error) {
-        // delete avatar when profile info is error
-        const { error } = await supabase.storage
-          .from("avatars")
-          .remove([
-            `https://vvmwizqlurbngruwobya.supabase.co/storage/v1/object/public/avatars/${userId}/avatar.jpg`,
-          ]);
+    }
+    toast.success("welcome to byway");
 
-        toast.error(`Upload error: ${error?.message}`);
-        return;
-      }
-      toast.success("welcome to byway");
-      // setOrderForm(3) work when user is instructor
+    if (role === "instructor") {
+      setOrderForm(3);
+    } else {
+      router.push("/");
     }
   };
+
+  const instructorOnSubmit: SubmitHandler<InstructorData> = async (
+    formData,
+  ) => {
+    const {
+      headline,
+      expertise,
+      github,
+      linkedin,
+      twitter,
+      youtube,
+      facebook,
+    } = formData;
+
+    const { error } = await supabase
+      .from("instructors")
+      .update({
+        headline,
+        expertise: expertise.split(",").map((item) => item.trim()),
+        social_links: { github, linkedin, twitter, youtube, facebook },
+      })
+      .eq("id", userId);
+    if (error) {
+      toast.error(`Upload error: ${error?.message}`);
+      return;
+    }
+    toast.success("welcome to byway");
+    router.push("/");
+  };
+
   return (
     <div className="max-sm:flex max-sm:justify-center max-sm:items-center sm:grid sm:grid-cols-2 h-[94vh] sm:h-[90vh]">
       <div className="my-auto px-4 max-sm:w-full py-4">
@@ -127,8 +158,7 @@ export default function Page() {
           Create Your Account
         </h1>
 
-        {/* reusable form component >> create user by email and password */}
-        {orderForm == 1 ? (
+        {orderForm == 1 && (
           <SignForm<SignData>
             register={signForm.register}
             errors={signForm.formState.errors}
@@ -137,14 +167,25 @@ export default function Page() {
             signin={false}
             isSubmitting={signForm.formState.isSubmitting}
           />
-        ) : (
-          // next step enter profile info
+        )}
+
+        {orderForm == 2 && (
           <UserForm<UserData>
             register={userForm.register}
             errors={userForm.formState.errors}
             onSubmit={userForm.handleSubmit(userOnSubmit)}
             btnName="sign up"
             isSubmitting={userForm.formState.isSubmitting}
+          />
+        )}
+
+        {orderForm == 3 && (
+          <InstructorFormUp
+            register={instructorForm.register}
+            errors={instructorForm.formState.errors}
+            onSubmit={instructorForm.handleSubmit(instructorOnSubmit)}
+            btnName="sign up"
+            isSubmitting={instructorForm.formState.isSubmitting}
           />
         )}
       </div>

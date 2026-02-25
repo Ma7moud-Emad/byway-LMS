@@ -143,7 +143,7 @@ export type SortOptions = {
   value: string;
 };
 export type Lesson = {
-  id: number;
+  id: string;
   title: string;
   duration_minutes: number;
   is_free_preview: boolean;

@@ -120,7 +120,6 @@ export default function Page() {
           })}
         </div>
       ) : (
-        // <NotFound msg="No courses were found" />
         <p className="text-center text-gray-700 capitalize font-semibold text-xl mt-50">
           No courses were found
         </p>
@@ -234,7 +233,7 @@ function CourseCard({
           {/* actions */}
           <div className="flex items-center gap-2">
             <Link
-              href={`/courses/${id}`}
+              href={`courses/${id}`}
               className="flex items-center justify-center gap-2 bg-gray-900 text-gray-50 py-1 capitalize text-lg font-medium rounded-sm w-full"
             >
               <RiEdit2Fill className="text-lg" />

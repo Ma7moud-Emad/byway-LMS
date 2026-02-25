@@ -74,30 +74,39 @@ const filters: Filter[] = [
 export default function FilterSidebar() {
   const [filtertion, setFiltertion] = useState(filters);
 
-  useEffect(() => {
-    const getPrograms = async () => {
-      const { data, error } = await supabase
-        .from("categories")
-        .select("id,title");
+  // fetch categories
+ useEffect(() => {
+  const getPrograms = async () => {
+    const { data, error } = await supabase
+      .from("categories")
+      .select("id,title");
 
-      if (error) {
-        throw error;
-      }
+    if (error) throw error;
 
-      setFiltertion((val) => [
+    setFiltertion((prev) => {
+      const alreadyExists = prev.some(
+        (f) => f.param === "programs"
+      );
+
+      if (alreadyExists) return prev;
+
+      return [
         {
           title: "Programs",
           param: "programs",
           type: "radio",
-          items: data?.map((item) => {
-            return { value: item.id, label: item.title };
-          }),
+          items: data?.map((item) => ({
+            value: item.id,
+            label: item.title,
+          })),
         },
-        ...val,
-      ]);
-    };
-    getPrograms();
-  }, []);
+        ...prev,
+      ];
+    });
+  };
+
+  getPrograms();
+}, []);
 
   return (
     <div className="pr-4">

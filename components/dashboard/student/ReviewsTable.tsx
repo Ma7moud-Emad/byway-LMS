@@ -54,7 +54,7 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
     <div className="relative">
       <table className="w-full overflow-x-scroll mt-4">
         <thead className="bg-blue-500 text-white">
-          <tr className="[&>th]:capitalize [&>th]:text-start [&>th]:p-2 [&>th]:whitespace-nowrap">
+          <tr className="[&>th]:capitalize [&>th]:text-start [&>th]:p-2 [&>th]:whitespace-nowrap [&>th]:border [&>th]:border-white">
             <th>course</th>
             <th>comment</th>
             <th>rating</th>
@@ -62,7 +62,7 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
             <th>remove</th>
           </tr>
         </thead>
-        <tbody className="[&>tr>td]:p-2 [&>tr]:even:bg-blue-100 [&>tr>td]:whitespace-nowrap">
+        <tbody className="[&>tr>td]:p-2 [&>tr]:even:bg-blue-100 [&>tr>td]:whitespace-nowrap [&>tr>td]:border [&>tr>td]:border-white">
           {data.map((review) => (
             <tr key={review.id}>
               <td className="font-medium">{review.courses.title}</td>
@@ -72,7 +72,7 @@ export default function ReviewsTable({ data }: { data: Review[] }) {
               </td>
               <td>
                 <Button classes="" clickedFun={() => setactiveEdit(review)}>
-                  <FaEdit size={20} />
+                  <FaEdit size={20} color="#2b7fff" />
                 </Button>
               </td>
               <td>

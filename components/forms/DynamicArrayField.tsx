@@ -35,12 +35,14 @@ export default function DynamicArrayField<TForm extends FieldValues>({
             {...register(`${name}.${index}.value` as Path<TForm>)}
             className="w-full outline-0 capitalize"
             placeholder={`${placeholder} ${index + 1}`}
+            suppressHydrationWarning
           />
 
           <button
             type="button"
             onClick={() => remove(index)}
             className="cursor-pointer text-red-500"
+            suppressHydrationWarning
           >
             <MdDeleteOutline className="text-xl" />
           </button>

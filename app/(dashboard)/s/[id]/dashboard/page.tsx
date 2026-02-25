@@ -45,13 +45,9 @@ export default async function page({ params }: { params: { id: string } }) {
   const active_courses = enrollments?.filter(
     (e) => e.status === "active",
   ).length;
-  const cancelled_courses = enrollments?.filter(
-    (e) => e.status === "cancelled",
-  ).length;
 
   const coursesStats = {
     enrolled_courses,
-    cancelled_courses,
     completed_courses,
     active_courses,
   };

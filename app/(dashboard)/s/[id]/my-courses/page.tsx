@@ -1,10 +1,11 @@
 "use client";
 
-import { supabase } from "@/lib/supabase/client";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
+
+import { supabase } from "@/lib/supabase/client";
+
 import MyCoursesCard from "@/components/dashboard/student/MyCoursesCard";
-import NotFound from "@/components/dashboard/student/NotFound";
 
 type Course = {
   progress_percentage: number;
@@ -79,51 +80,46 @@ export default function Page() {
     <div>
       <h1 className="text-2xl font-bold text-gray-900 mb-4">My Courses</h1>
 
+      <header className="bg-white p-2 rounded-sm mb-6 shadow ">
+        <ul className="text-gray-900 font-medium grid grid-cols-3 gap-6 text-center">
+          {["courses", "complete", "active"].map((query) => (
+            <li
+              key={query}
+              className={`capitalize cursor-pointer px-2 py-1 md:py-2 md:text-xl ${
+                activeFilter === query
+                  ? "bg-blue-500 text-white rounded-sm"
+                  : ""
+              }`}
+              onClick={() => handleQueryChange(query)}
+            >
+              {query}
+            </li>
+          ))}
+        </ul>
+      </header>
       {courses.length > 0 ? (
-        <>
-          <header className="bg-white p-2 rounded-sm mb-6 shadow ">
-            <ul className="text-gray-900 font-medium grid grid-cols-3 gap-6 text-center">
-              {["courses", "complete", "active"].map((query) => (
-                <li
-                  key={query}
-                  className={`capitalize cursor-pointer px-2 py-1 md:py-2 md:text-xl ${
-                    activeFilter === query
-                      ? "bg-blue-500 text-white rounded-sm"
-                      : ""
-                  }`}
-                  onClick={() => handleQueryChange(query)}
-                >
-                  {query}
-                </li>
-              ))}
-            </ul>
-          </header>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {courses.map((course) => {
-              const {
-                progress_percentage,
-                courses: { id, poster, title, short_description },
-              } = course;
-              return (
-                <MyCoursesCard
-                  key={id}
-                  poster={poster}
-                  title={title}
-                  short_description={short_description}
-                  id={id}
-                  progress_percentage={progress_percentage}
-                />
-              );
-            })}
-          </div>
-        </>
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {courses.map((course) => {
+            const {
+              progress_percentage,
+              courses: { id, poster, title, short_description },
+            } = course;
+            return (
+              <MyCoursesCard
+                key={id}
+                poster={poster}
+                title={title}
+                short_description={short_description}
+                id={id}
+                progress_percentage={progress_percentage}
+              />
+            );
+          })}
+        </div>
       ) : (
-        <NotFound
-          heading="You haven't enrolled in any courses yet"
-          msg="Start learning today by enrolling in a course that matches your goals"
-          href="/courses"
-          btnText="Browse courses"
-        />
+        <p className="text-center text-gray-700 capitalize font-semibold text-xl mt-50">
+          No courses were found
+        </p>
       )}
     </div>
   );

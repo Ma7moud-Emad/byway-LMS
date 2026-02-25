@@ -4,18 +4,42 @@ import { useState } from "react";
 import LessonPlayer from "./LessonPlayer";
 import { Lesson, Module } from "@/lib/types";
 import { FaCheckSquare, FaRegSquare } from "react-icons/fa";
+import { supabase } from "@/lib/supabase/client";
+import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export default function Curriculum({
   modules,
   isEnrolled,
   isFree,
+  user_id,
+  enrollment_id,
 }: {
   modules: Module[];
   isEnrolled: boolean;
   isFree: boolean;
+  user_id: string;
+  enrollment_id: string;
 }) {
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
-  console.log(activeLesson);
+  const router = useRouter();
+
+  async function markCompleted(lesson_id: string) {
+    const { error } = await supabase.from("user_progress").insert([
+      {
+        user_id: user_id,
+        enrollment_id: enrollment_id,
+        lesson_id: lesson_id,
+        is_completed: true,
+      },
+    ]);
+    if (error) {
+      toast.error("Failed to mark lesson as completed.");
+    } else {
+      toast.success("Lesson marked as completed!");
+      router.refresh();
+    }
+  }
 
   return (
     <>
@@ -83,6 +107,16 @@ export default function Curriculum({
                                 : null
                             }
                             onClose={() => setActiveLesson(null)}
+                            endFun={() => {
+                              if (
+                                lesson.user_progress?.[0]?.is_completed ||
+                                user_id === "" ||
+                                enrollment_id === ""
+                              )
+                                return;
+
+                              markCompleted(lesson.id);
+                            }}
                           />
                         )}
                       </div>

@@ -101,11 +101,15 @@ export default function CreateForm({ course }: { course?: Course }) {
   }, []);
 
   // course poster state
-  const [posterPreview, setPosterPreview] = useState<string | null>(null);
+  const [posterPreview, setPosterPreview] = useState<string | null>(
+    course ? course.poster : null,
+  );
   const [posterFile, setPosterFile] = useState<File | null>(null);
 
   // promo course state
-  const [videoPreview, setVideoPreview] = useState<string | null>(null);
+  const [videoPreview, setVideoPreview] = useState<string | null>(
+    course ? course.promo_video : null,
+  );
   const [videoFile, setVideoFile] = useState<File | null>(null);
 
   // react hook form
@@ -113,7 +117,7 @@ export default function CreateForm({ course }: { course?: Course }) {
     defaultValues: course ?? {},
   });
 
-  // form submission
+  // form submission handler
 
   const onSubmit: SubmitHandler<Course> = async (data) => {
     // Destructuring

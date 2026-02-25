@@ -11,14 +11,13 @@ import { SignFormProps } from "@/lib/types";
 export default function SignForm<T extends FieldValues>({
   register,
   errors,
-  signin = true,
-  btnName = "Log in",
   onSubmit,
   isSubmitting,
+  btnName = "Log in",
+  signin = true,
 }: SignFormProps<T> & { isSubmitting?: boolean }) {
   return (
     <form onSubmit={onSubmit}>
-      {/* sign with email and password */}
       <Input<T>
         name={"email" as Path<T>}
         label="Email"
