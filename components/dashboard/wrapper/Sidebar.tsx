@@ -15,7 +15,7 @@ export default function Sidebar({
     role: string;
   };
 }) {
-  const [isOpen, setIsOpen] = useState<boolean>(true);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
   return (
     <aside className="bg-gray-900 text-slate-200 p-2 flex flex-col">
       <SidebarLogo isOpen={isOpen} setIsOpen={setIsOpen} />

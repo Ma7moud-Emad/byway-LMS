@@ -95,6 +95,7 @@ export default async function InstructorDetails({ id }: { id: string }) {
       `
     id,
     comment,
+    rating,
     profiles(avatar_url, full_name),
     courses!inner(instructor_id)
   `,
@@ -106,6 +107,7 @@ export default async function InstructorDetails({ id }: { id: string }) {
       return {
         id: item.id,
         comment: item.comment,
+        rating: item.rating,
         profiles: Array.isArray(item.profiles)
           ? item.profiles[0]
           : item.profiles,
